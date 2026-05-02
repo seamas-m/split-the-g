@@ -34,7 +34,6 @@ export default function UploadPage() {
     setLoading(true);
     try {
       const imageUrl = await uploadPintPhoto(file);
-
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,7 +44,6 @@ export default function UploadPage() {
           settleSeconds: settleSeconds ? parseInt(settleSeconds) : null,
         }),
       });
-
       if (!res.ok) throw new Error("Failed to save post");
       router.push("/feed");
     } catch (err: unknown) {
@@ -57,19 +55,19 @@ export default function UploadPage() {
 
   return (
     <main className="flex-1 flex flex-col p-6 pb-24 gap-6 max-w-lg mx-auto w-full">
-      <h1 className="text-2xl font-black text-amber-400">Post your pint</h1>
+      <h2 className="text-2xl font-display font-bold text-harp">Post your pint</h2>
 
       <button
         type="button"
         onClick={() => fileRef.current?.click()}
-        className="relative aspect-[3/4] w-full rounded-2xl bg-zinc-900 border-2 border-dashed border-zinc-700 flex items-center justify-center overflow-hidden"
+        className="relative aspect-[3/4] w-full rounded-2xl bg-porter border-2 border-dashed border-malt flex items-center justify-center overflow-hidden hover:border-harp transition-colors"
       >
         {preview ? (
           <Image src={preview} alt="Preview" fill className="object-cover" />
         ) : (
-          <div className="flex flex-col items-center gap-2 text-zinc-500">
+          <div className="flex flex-col items-center gap-3 text-foam">
             <Camera size={40} />
-            <span className="text-sm">Tap to add photo</span>
+            <span className="text-sm tracking-wide">Tap to add photo</span>
           </div>
         )}
       </button>
@@ -88,14 +86,14 @@ export default function UploadPage() {
           placeholder="Pub name (optional)"
           value={pubName}
           onChange={(e) => setPubName(e.target.value)}
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         <input
           type="text"
           placeholder="City (optional)"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         <input
           type="number"
@@ -103,15 +101,13 @@ export default function UploadPage() {
           value={settleSeconds}
           onChange={(e) => setSettleSeconds(e.target.value)}
           min={0}
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 w-full"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors w-full"
         />
-
         {error && <p className="text-red-400 text-sm">{error}</p>}
-
         <button
           type="submit"
           disabled={loading || !file}
-          className="bg-amber-400 text-black font-bold py-3 rounded-xl disabled:opacity-40 mt-2"
+          className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-40 mt-2 tracking-wide transition-opacity"
         >
           {loading ? "Posting…" : "Post pint 🍺"}
         </button>

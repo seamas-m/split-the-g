@@ -34,15 +34,15 @@ export default async function FeedPage() {
 
   return (
     <>
-      <header className="sticky top-0 bg-black border-b border-zinc-800 px-6 py-4 z-40">
-        <h1 className="text-xl font-black text-amber-400">Split the G</h1>
+      <header className="sticky top-0 bg-stout/90 backdrop-blur border-b border-malt px-6 py-4 z-40">
+        <h1 className="text-2xl font-display font-bold text-harp tracking-wide">Split the G</h1>
       </header>
 
       <main className="flex-1 p-4 pb-24 max-w-lg mx-auto w-full">
         {posts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-zinc-500 gap-2">
-            <span className="text-5xl">🍺</span>
-            <p>No pints yet. Be the first.</p>
+          <div className="flex flex-col items-center justify-center h-64 text-foam gap-3">
+            <span className="text-6xl">🍺</span>
+            <p className="font-display italic text-lg">No pints yet. Be the first.</p>
           </div>
         ) : (
           <div className="flex flex-col gap-6">

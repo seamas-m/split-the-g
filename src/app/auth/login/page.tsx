@@ -28,10 +28,10 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 gap-8">
+    <main className="flex-1 flex flex-col items-center justify-center p-6 gap-10">
       <div className="text-center">
-        <h1 className="text-4xl font-black text-amber-400">Split the G</h1>
-        <p className="text-zinc-400 mt-1 text-sm">Sign in to share your pints</p>
+        <h1 className="text-5xl font-display font-bold text-harp">Split the G</h1>
+        <p className="text-foam mt-2 text-sm tracking-wide">Sign in to share your pints</p>
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4">
@@ -41,7 +41,7 @@ export default function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         <input
           type="password"
@@ -49,21 +49,21 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         {error && <p className="text-red-400 text-sm">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="bg-amber-400 text-black font-bold py-3 rounded-xl disabled:opacity-50"
+          className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-50 transition-opacity mt-1 tracking-wide"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
 
-      <p className="text-zinc-500 text-sm">
+      <p className="text-foam text-sm">
         No account?{" "}
-        <Link href="/auth/signup" className="text-amber-400 font-medium">
+        <Link href="/auth/signup" className="text-harp font-medium hover:underline">
           Sign up
         </Link>
       </p>

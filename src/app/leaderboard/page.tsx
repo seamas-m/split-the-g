@@ -46,37 +46,37 @@ export default async function LeaderboardPage() {
 
   return (
     <>
-      <header className="sticky top-0 bg-black border-b border-zinc-800 px-6 py-4 z-40">
-        <h1 className="text-xl font-black text-amber-400 flex items-center gap-2">
-          <Trophy size={20} /> Top Pubs This Week
+      <header className="sticky top-0 bg-stout/90 backdrop-blur border-b border-malt px-6 py-4 z-40">
+        <h1 className="text-2xl font-display font-bold text-harp tracking-wide flex items-center gap-2">
+          <Trophy size={22} /> Top Pubs
         </h1>
       </header>
 
       <main className="flex-1 p-4 pb-24 max-w-lg mx-auto w-full">
         {pubs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-zinc-500 gap-2">
-            <span className="text-5xl">🏆</span>
-            <p>No rated pints this week yet.</p>
+          <div className="flex flex-col items-center justify-center h-64 text-foam gap-3">
+            <span className="text-6xl">🏆</span>
+            <p className="font-display italic text-lg">No rated pints this week yet.</p>
           </div>
         ) : (
           <ol className="flex flex-col gap-3">
             {pubs.map((pub, i) => (
               <li
                 key={pub.name}
-                className="flex items-center gap-4 bg-zinc-900 rounded-2xl px-5 py-4 border border-zinc-800"
+                className="flex items-center gap-4 bg-porter rounded-2xl px-5 py-4 border border-malt"
               >
                 <span className="text-2xl w-8 text-center">
-                  {MEDAL[i] ?? `${i + 1}`}
+                  {MEDAL[i] ?? <span className="text-foam text-base font-bold">{i + 1}</span>}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold truncate">{pub.name}</p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="font-semibold text-cream truncate">{pub.name}</p>
+                  <p className="text-xs text-foam mt-0.5">
                     {pub.posts} post{pub.posts !== 1 ? "s" : ""} · {pub.ratings} rating{pub.ratings !== 1 ? "s" : ""}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-amber-400 font-black text-lg">{pub.avg.toFixed(1)}</p>
-                  <p className="text-xs text-zinc-500">/ 5</p>
+                  <p className="text-harp font-display font-bold text-xl">{pub.avg.toFixed(1)}</p>
+                  <p className="text-xs text-foam">/ 5</p>
                 </div>
               </li>
             ))}

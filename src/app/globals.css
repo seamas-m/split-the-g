@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
-:root {
+@theme inline {
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-playfair);
+
+  /* Guinness palette */
+  --color-stout:  #0e0c0b;   /* deep background */
+  --color-porter: #1c1714;   /* card surface */
+  --color-malt:   #2e2724;   /* borders */
+  --color-cream:  #f0e6d3;   /* primary text */
+  --color-foam:   #9e8e7e;   /* secondary text */
+  --color-harp:   #c9a454;   /* gold accent */
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
 }

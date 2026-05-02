@@ -24,7 +24,7 @@ function formatSettle(s: number) {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <article className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800">
+    <article className="bg-porter rounded-2xl overflow-hidden border border-malt">
       <div className="relative aspect-[3/4] w-full">
         <Image
           src={post.imageUrl}
@@ -35,23 +35,23 @@ export default function PostCard({ post }: PostCardProps) {
       </div>
       <div className="p-4 flex flex-col gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-bold text-amber-400">
+          <div className="w-8 h-8 rounded-full bg-malt flex items-center justify-center text-sm font-bold text-harp">
             {(post.user.username ?? "?")[0].toUpperCase()}
           </div>
-          <span className="font-semibold text-sm">{post.user.username ?? "anon"}</span>
+          <span className="font-medium text-sm text-cream">{post.user.username ?? "anon"}</span>
         </div>
 
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-zinc-400">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {post.pubName && (
-            <span className="font-medium text-white">{post.pubName}</span>
+            <span className="font-semibold text-cream">{post.pubName}</span>
           )}
           {post.city && (
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1 text-foam">
               <MapPin size={13} /> {post.city}
             </span>
           )}
           {post.settleSeconds != null && (
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1 text-foam">
               <Clock size={13} /> {formatSettle(post.settleSeconds)}
             </span>
           )}

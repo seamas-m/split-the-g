@@ -14,14 +14,14 @@ const links = [
 export default function Navbar() {
   const pathname = usePathname();
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 flex justify-around items-center h-16 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-porter border-t border-malt flex justify-around items-center h-16 z-50">
       {links.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}
           href={href}
           className={cn(
-            "flex flex-col items-center gap-0.5 text-xs",
-            pathname === href ? "text-amber-400" : "text-zinc-500 hover:text-zinc-200"
+            "flex flex-col items-center gap-0.5 text-xs font-medium transition-colors",
+            pathname === href ? "text-harp" : "text-foam hover:text-cream"
           )}
         >
           <Icon size={22} />
@@ -30,7 +30,7 @@ export default function Navbar() {
       ))}
       <Link
         href="/auth/login"
-        className="flex flex-col items-center gap-0.5 text-xs text-zinc-500 hover:text-zinc-200"
+        className="flex flex-col items-center gap-0.5 text-xs font-medium text-foam hover:text-cream transition-colors"
       >
         <LogIn size={22} />
         Login

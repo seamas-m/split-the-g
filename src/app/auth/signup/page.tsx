@@ -36,10 +36,10 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 gap-8">
+    <main className="flex-1 flex flex-col items-center justify-center p-6 gap-10">
       <div className="text-center">
-        <h1 className="text-4xl font-black text-amber-400">Split the G</h1>
-        <p className="text-zinc-400 mt-1 text-sm">Create your account</p>
+        <h1 className="text-5xl font-display font-bold text-harp">Split the G</h1>
+        <p className="text-foam mt-2 text-sm tracking-wide">Create your account</p>
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4">
@@ -49,7 +49,7 @@ export default function SignupPage() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         <input
           type="email"
@@ -57,7 +57,7 @@ export default function SignupPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         <input
           type="password"
@@ -66,21 +66,21 @@ export default function SignupPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
-          className="bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
         />
         {error && <p className="text-red-400 text-sm">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="bg-amber-400 text-black font-bold py-3 rounded-xl disabled:opacity-50"
+          className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-50 transition-opacity mt-1 tracking-wide"
         >
           {loading ? "Creating account…" : "Create account"}
         </button>
       </form>
 
-      <p className="text-zinc-500 text-sm">
+      <p className="text-foam text-sm">
         Have an account?{" "}
-        <Link href="/auth/login" className="text-amber-400 font-medium">
+        <Link href="/auth/login" className="text-harp font-medium hover:underline">
           Sign in
         </Link>
       </p>

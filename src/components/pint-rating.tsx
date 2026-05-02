@@ -45,14 +45,14 @@ export default function PintRating({ postId, avgScore, userScore, totalRatings }
             onMouseLeave={() => setHovered(0)}
             className={cn(
               "text-xl transition-opacity",
-              n <= display ? "opacity-100" : "opacity-25"
+              n <= display ? "opacity-100" : "opacity-20"
             )}
           >
             {PINT}
           </button>
         ))}
       </div>
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-foam">
         {avgScore > 0 ? `${avgScore.toFixed(1)} avg · ` : ""}{totalRatings} rating{totalRatings !== 1 ? "s" : ""}
       </p>
     </div>
