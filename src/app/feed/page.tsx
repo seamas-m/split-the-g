@@ -19,7 +19,6 @@ async function getPosts() {
     imageUrl: p.imageUrl,
     pubName: p.pubName,
     city: p.city,
-    settleSeconds: p.settleSeconds,
     createdAt: p.createdAt.toISOString(),
     user: p.user,
     avgScore: p.ratings.length

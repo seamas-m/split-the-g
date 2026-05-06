@@ -5,15 +5,16 @@ import { PrismaNeon } from "@prisma/adapter-neon";
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
+// Real Guinness & pub pint photos from Unsplash
 const PINT_PHOTOS = [
-  "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=800&q=80",
-  "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=800&q=80",
-  "https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=800&q=80",
-  "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&q=80",
-  "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=800&q=80",
-  "https://images.unsplash.com/photo-1573062337052-bb78916f1671?w=800&q=80",
-  "https://images.unsplash.com/photo-1600788886242-5c96aabe3757?w=800&q=80",
-  "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=800&q=80",
+  "https://images.unsplash.com/photo-sPytWc2odxc?w=600&q=75", // pint on table outside pub
+  "https://images.unsplash.com/photo-ML90fgblkns?w=600&q=75", // pint on bar in pub
+  "https://images.unsplash.com/photo-hupimhanV5M?w=600&q=75", // dark pint held in hand
+  "https://images.unsplash.com/photo-8L4-eSuI2w8?w=600&q=75", // close up pint with bokeh
+  "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&q=75",
+  "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=600&q=75",
+  "https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=600&q=75",
+  "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&q=75",
 ];
 
 const PUBS = [
@@ -39,11 +40,6 @@ const USERS = [
 
 function pick<T>(arr: T[]) {
   return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function randSettle() {
-  const options = [null, 90, 105, 112, 119, 95, 102, 108];
-  return pick(options);
 }
 
 async function main() {
@@ -79,7 +75,6 @@ async function main() {
         imageUrl: PINT_PHOTOS[i % PINT_PHOTOS.length],
         pubName: pub.name,
         city: pub.city,
-        settleSeconds: randSettle(),
         createdAt: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000),
       },
     });

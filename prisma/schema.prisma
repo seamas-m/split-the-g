@@ -65,11 +65,10 @@ model Verification {
 model Post {
   id            String   @id @default(uuid())
   userId        String
-  imageUrl      String
-  pubName       String?
-  city          String?
-  settleSeconds Int?
-  createdAt     DateTime @default(now())
+  imageUrl  String
+  pubName   String?
+  city      String?
+  createdAt DateTime @default(now())
 
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   ratings Rating[]

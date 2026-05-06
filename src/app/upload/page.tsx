@@ -15,7 +15,6 @@ export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
   const [pubName, setPubName] = useState("");
   const [city, setCity] = useState("");
-  const [settleSeconds, setSettleSeconds] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +40,6 @@ export default function UploadPage() {
           imageUrl,
           pubName: pubName || null,
           city: city || null,
-          settleSeconds: settleSeconds ? parseInt(settleSeconds) : null,
         }),
       });
       if (!res.ok) throw new Error("Failed to save post");
@@ -94,14 +92,6 @@ export default function UploadPage() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
-        />
-        <input
-          type="number"
-          placeholder="Settle time in seconds (optional)"
-          value={settleSeconds}
-          onChange={(e) => setSettleSeconds(e.target.value)}
-          min={0}
-          className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors w-full"
         />
         {error && <p className="text-red-400 text-sm">{error}</p>}
         <button

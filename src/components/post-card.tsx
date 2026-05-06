@@ -1,6 +1,6 @@
 import Image from "next/image";
 import PintRating from "./pint-rating";
-import { MapPin, Clock } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 interface PostCardProps {
   post: {
@@ -8,18 +8,12 @@ interface PostCardProps {
     imageUrl: string;
     pubName: string | null;
     city: string | null;
-    settleSeconds: number | null;
     createdAt: string;
     user: { username: string | null; image: string | null };
     avgScore: number;
     totalRatings: number;
     userScore?: number;
   };
-}
-
-function formatSettle(s: number) {
-  if (s < 60) return `${s}s settle`;
-  return `${Math.floor(s / 60)}m ${s % 60}s settle`;
 }
 
 export default function PostCard({ post }: PostCardProps) {
@@ -50,11 +44,7 @@ export default function PostCard({ post }: PostCardProps) {
               <MapPin size={13} /> {post.city}
             </span>
           )}
-          {post.settleSeconds != null && (
-            <span className="flex items-center gap-1 text-foam">
-              <Clock size={13} /> {formatSettle(post.settleSeconds)}
-            </span>
-          )}
+
         </div>
 
         <PintRating

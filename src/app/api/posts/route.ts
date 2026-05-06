@@ -19,11 +19,11 @@ export async function POST(req: NextRequest) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { imageUrl, pubName, city, settleSeconds } = await req.json();
+  const { imageUrl, pubName, city } = await req.json();
   if (!imageUrl) return NextResponse.json({ error: "imageUrl required" }, { status: 400 });
 
   const post = await prisma.post.create({
-    data: { userId: session.user.id, imageUrl, pubName, city, settleSeconds },
+    data: { userId: session.user.id, imageUrl, pubName, city },
   });
 
   return NextResponse.json(post, { status: 201 });
