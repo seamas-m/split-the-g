@@ -4,16 +4,28 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
-function SplitGMark() {
+function SplitGMark({ size = 28 }: { size?: number }) {
   return (
-    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* G letterform */}
+    <svg width={size} height={size} viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
-        d="M25 8.2C22.5 5.8 19.4 4.5 16 4.5C9.1 4.5 3.5 10.1 3.5 16C3.5 21.9 9.1 27.5 16 27.5C22.3 27.5 27.5 22.8 27.5 17V15H16V18.5H23.5C22.2 21.6 19.3 23.5 16 23.5C11.2 23.5 7.5 20.1 7.5 16C7.5 11.9 11.2 8.5 16 8.5C18.3 8.5 20.4 9.4 22 10.9L25 8.2Z"
-        fill="#c9a454"
+        d="M 38,20.5833 L 47.5,20.5833
+           C 49.0833,23.75 49.0833,28.5 49.0833,30.0833
+           C 49.0833,42.75 45.9167,42.75 45.5208,49.0833
+           L 45.9167,57
+           C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833
+           L 31.6667,58.5833
+           C 31.6667,58.5833 30.0833,58.5833 30.0833,57
+           L 30.4792,49.0833
+           C 30.0833,42.75 26.9167,42.75 26.9167,30.0833
+           C 26.9167,28.5 26.9167,23.75 28.5,20.5833
+           L 38,20.5833 Z"
+        stroke="#c9a454" strokeWidth="2" strokeLinejoin="round"
       />
-      {/* Horizontal split line */}
-      <line x1="3" y1="16" x2="27" y2="16" stroke="#0e0c0b" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+        stroke="#c9a454" strokeWidth="1.5" strokeLinejoin="round"
+      />
+      <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" strokeWidth="3" strokeLinecap="round" />
     </svg>
   );
 }
