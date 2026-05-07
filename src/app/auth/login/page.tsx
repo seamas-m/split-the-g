@@ -30,14 +30,14 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
+        className="bg-porter border border-malt rounded-xl px-4 py-3.5 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
       />
       <input
         type="password"
@@ -45,13 +45,13 @@ function LoginForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-        className="bg-porter border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam focus:outline-none focus:border-harp transition-colors"
+        className="bg-porter border border-malt rounded-xl px-4 py-3.5 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
       />
       {error && <p className="text-red-400 text-sm">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-50 transition-opacity mt-1 tracking-wide"
+        className="bg-harp text-stout font-bold py-3.5 rounded-xl disabled:opacity-50 transition-opacity mt-1 text-sm tracking-wide"
       >
         {loading ? "Signing in…" : "Sign in"}
       </button>
@@ -61,10 +61,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 gap-10">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-cream">Split the G</h1>
-        <p className="text-foam mt-2 text-sm tracking-wide">Sign in to share your pints</p>
+    <main className="flex-1 flex flex-col items-center justify-center p-6 gap-8 max-w-sm mx-auto w-full">
+      <div className="text-center flex flex-col items-center gap-3">
+        <span className="text-6xl">🍺</span>
+        <div>
+          <h1 className="text-4xl font-bold text-cream tracking-tight">Split the G</h1>
+          <p className="text-foam text-sm mt-1">Sign in to share your pints</p>
+        </div>
       </div>
 
       <Suspense>
@@ -73,7 +76,7 @@ export default function LoginPage() {
 
       <p className="text-foam text-sm">
         No account?{" "}
-        <Link href="/auth/signup" className="text-harp font-medium hover:underline">
+        <Link href="/auth/signup" className="text-harp font-semibold hover:underline">
           Sign up
         </Link>
       </p>

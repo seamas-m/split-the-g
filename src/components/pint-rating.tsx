@@ -45,7 +45,7 @@ export default function PintRating({ postId, avgScore, userScore, totalRatings }
             onMouseLeave={() => setHovered(0)}
             className={cn(
               "text-xl transition-opacity",
-              n <= display ? "opacity-100" : "opacity-20"
+              n <= display ? "opacity-100" : "opacity-40"
             )}
           >
             {PINT}
