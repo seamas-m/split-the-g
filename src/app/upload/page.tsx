@@ -99,7 +99,7 @@ export default function UploadPage() {
           disabled={loading || !file}
           className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-40 mt-2 tracking-wide transition-opacity"
         >
-          {loading ? "Posting…" : "Post pint 🍺"}
+          {loading ? "Posting…" : "Post pint"}
         </button>
       </form>
     </main>

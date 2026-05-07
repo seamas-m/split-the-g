@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import PostCard from "@/components/post-card";
+import AppHeader from "@/components/app-header";
 import Navbar from "@/components/navbar";
 import { prisma } from "@/lib/prisma";
 
@@ -33,21 +34,19 @@ export default async function FeedPage() {
 
   return (
     <>
-      <header className="sticky top-0 bg-stout/90 backdrop-blur border-b border-malt px-6 py-4 z-40 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-cream tracking-tight">Split the G</h1>
-        <span className="text-2xl">🍺</span>
-      </header>
+      <AppHeader />
 
-      <main className="flex-1 p-4 pb-24 max-w-lg mx-auto w-full">
+      <main className="flex-1 p-4 pb-24 w-full max-w-5xl mx-auto">
         {posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-foam gap-3">
-            <span className="text-6xl">🍺</span>
             <p className="italic text-lg">No pints yet. Be the first.</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-6">
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
             {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
-              <PostCard key={post.id} post={post} />
+              <div key={post.id} className="break-inside-avoid">
+                <PostCard post={post} />
+              </div>
             ))}
           </div>
         )}
