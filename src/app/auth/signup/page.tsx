@@ -22,6 +22,7 @@ export default function SignupPage() {
         email,
         password,
         name: username,
+        username,
         callbackURL: "/feed",
         fetchOptions: {
           onSuccess: () => router.push("/feed"),
