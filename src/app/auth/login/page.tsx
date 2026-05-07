@@ -30,7 +30,7 @@ export default function LoginPage() {
   return (
     <main className="flex-1 flex flex-col items-center justify-center p-6 gap-10">
       <div className="text-center">
-        <h1 className="text-5xl font-display font-bold text-harp">Split the G</h1>
+        <h1 className="text-5xl font-bold text-cream">Split the G</h1>
         <p className="text-foam mt-2 text-sm tracking-wide">Sign in to share your pints</p>
       </div>
 

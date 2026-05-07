@@ -5,12 +5,12 @@ import { PrismaNeon } from "@prisma/adapter-neon";
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
-// Real Guinness & pub pint photos from Unsplash
+// Verified Guinness & pub pint photos from Unsplash
 const PINT_PHOTOS = [
-  "https://images.unsplash.com/photo-sPytWc2odxc?w=600&q=75", // pint on table outside pub
-  "https://images.unsplash.com/photo-ML90fgblkns?w=600&q=75", // pint on bar in pub
-  "https://images.unsplash.com/photo-hupimhanV5M?w=600&q=75", // dark pint held in hand
-  "https://images.unsplash.com/photo-8L4-eSuI2w8?w=600&q=75", // close up pint with bokeh
+  "https://images.unsplash.com/photo-1701714280017-cd7bbe218e6a?w=600&q=75", // pint on table outside pub
+  "https://images.unsplash.com/photo-1730243694317-167fbf9eaa42?w=600&q=75", // pint on bar in pub
+  "https://images.unsplash.com/photo-1594756560338-2a7956986931?w=600&q=75", // dark pint held in hand
+  "https://images.unsplash.com/photo-1720110919165-49df0e4f5d49?w=600&q=75", // pint with bokeh halo
   "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&q=75",
   "https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=600&q=75",
   "https://images.unsplash.com/photo-1532634993-15f421e42ec0?w=600&q=75",

@@ -53,7 +53,7 @@ export default function UploadPage() {
 
   return (
     <main className="flex-1 flex flex-col p-6 pb-24 gap-6 max-w-lg mx-auto w-full">
-      <h2 className="text-2xl font-display font-bold text-harp">Post your pint</h2>
+      <h2 className="text-2xl font-bold text-cream">Post your pint</h2>
 
       <button
         type="button"

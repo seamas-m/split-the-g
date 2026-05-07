@@ -47,7 +47,7 @@ export default async function LeaderboardPage() {
   return (
     <>
       <header className="sticky top-0 bg-stout/90 backdrop-blur border-b border-malt px-6 py-4 z-40">
-        <h1 className="text-2xl font-display font-bold text-harp tracking-wide flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-cream tracking-wide flex items-center gap-2">
           <Trophy size={22} /> Top Pubs
         </h1>
       </header>
@@ -56,7 +56,7 @@ export default async function LeaderboardPage() {
         {pubs.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-foam gap-3">
             <span className="text-6xl">🏆</span>
-            <p className="font-display italic text-lg">No rated pints this week yet.</p>
+            <p className="italic text-lg">No rated pints this week yet.</p>
           </div>
         ) : (
           <ol className="flex flex-col gap-3">
@@ -75,7 +75,7 @@ export default async function LeaderboardPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-harp font-display font-bold text-xl">{pub.avg.toFixed(1)}</p>
+                  <p className="text-harp font-bold text-xl">{pub.avg.toFixed(1)}</p>
                   <p className="text-xs text-foam">/ 5</p>
                 </div>
               </li>
