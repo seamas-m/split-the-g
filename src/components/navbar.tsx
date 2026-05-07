@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, PlusCircle, LogIn, User } from "lucide-react";
+import { Home, PlusCircle, LogIn, User, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSession, signOut } from "@/lib/auth-client";
 
@@ -38,13 +38,19 @@ export default function Navbar() {
       ))}
 
       {session ? (
-        <button
-          onClick={handleSignOut}
-          className="flex flex-col items-center gap-0.5 text-xs font-medium text-foam hover:text-cream transition-colors"
-        >
-          <User size={22} />
-          <span className="max-w-[60px] truncate">{session.user.name}</span>
-        </button>
+        <>
+          <div className="flex flex-col items-center gap-0.5 text-xs font-medium text-foam">
+            <User size={22} />
+            <span className="max-w-[60px] truncate">{session.user.name}</span>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="flex flex-col items-center gap-0.5 text-xs font-medium text-foam hover:text-cream transition-colors"
+          >
+            <LogOut size={22} />
+            Sign out
+          </button>
+        </>
       ) : (
         <Link
           href="/auth/login"
