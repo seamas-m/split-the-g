@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Trophy, PlusCircle, LogIn } from "lucide-react";
+import { Home, PlusCircle, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/feed", label: "Feed", icon: Home },
   { href: "/upload", label: "Post", icon: PlusCircle },
-  { href: "/leaderboard", label: "Top Pubs", icon: Trophy },
 ];
 
 export default function Navbar() {
