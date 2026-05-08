@@ -44,20 +44,17 @@ export default function SignupPage() {
     setError("");
     setLoading(true);
     try {
-      const { error } = await (signUp.email as Function)({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await (signUp.email as any)({
         email,
         password,
         name: username,
         username,
-        callbackURL: "/feed",
-        fetchOptions: {
-          onSuccess: () => router.push("/feed"),
-        },
       });
-      if (error) throw new Error(error.message);
+      if (result?.error) throw new Error(result.error.message ?? "Sign up failed");
+      router.push("/feed");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Sign up failed");
-    } finally {
       setLoading(false);
     }
   }
