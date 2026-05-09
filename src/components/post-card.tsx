@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import PintRating from "./pint-rating";
 import PostActions from "./post-actions";
 import TimeAgo from "./time-ago";
@@ -32,7 +33,10 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
       </div>
       <div className="p-4 flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link
+            href={`/profile/${post.user.username}`}
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
             <div className="w-8 h-8 rounded-full bg-malt flex items-center justify-center text-sm font-bold text-harp">
               {(post.user.username ?? "?")[0].toUpperCase()}
             </div>
@@ -40,7 +44,7 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
               <span className="font-medium text-sm text-cream leading-tight">{post.user.username ?? "anon"}</span>
               <TimeAgo date={post.createdAt} />
             </div>
-          </div>
+          </Link>
           {isOwner && (
             <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
           )}

@@ -44,7 +44,7 @@ export default function AppHeader() {
 
       {session && (
         <Link
-          href="/profile"
+          href={`/profile/${(session.user as any).username ?? session.user.name}`}
           className="flex items-center gap-2 text-foam hover:text-cream transition-colors"
         >
           <div className="w-8 h-8 rounded-full bg-malt border border-malt hover:border-harp transition-colors flex items-center justify-center text-xs font-bold text-harp">
