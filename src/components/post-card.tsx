@@ -20,7 +20,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, isOwner }: PostCardProps) {
   return (
-    <article className="bg-porter rounded-2xl overflow-hidden border border-malt">
+    <article className="relative bg-porter rounded-2xl overflow-hidden border border-malt">
       <div className="relative aspect-[3/4] w-full">
         <Image
           src={post.imageUrl}
