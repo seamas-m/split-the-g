@@ -38,7 +38,7 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
             <span className="font-medium text-sm text-cream">{post.user.username ?? "anon"}</span>
           </div>
           {isOwner && (
-            <PostActions postId={post.id} pubName={post.pubName} city={post.city} />
+            <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
           )}
         </div>
 

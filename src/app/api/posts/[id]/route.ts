@@ -12,10 +12,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
   if (post.userId !== session.user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  const { pubName, city } = await req.json();
+  const { pubName, city, imageUrl } = await req.json();
   const updated = await prisma.post.update({
     where: { id },
     data: {
+      ...(imageUrl ? { imageUrl } : {}),
       pubName: pubName ?? null,
       city: city ?? null,
     },
