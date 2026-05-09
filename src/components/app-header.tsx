@@ -34,10 +34,10 @@ export default function AppHeader() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-3 z-40 flex items-center justify-between">
-      <Link href="/feed" className="flex items-center gap-2.5">
-        <SplitGMark />
-        <span className="font-display text-xl font-bold text-cream tracking-tight leading-none">
+    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-4 z-40 flex items-center justify-between">
+      <Link href="/feed" className="flex items-center gap-3">
+        <SplitGMark size={40} />
+        <span className="font-display text-2xl font-bold text-cream tracking-tight leading-none">
           Split the G
         </span>
       </Link>
