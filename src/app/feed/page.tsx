@@ -4,6 +4,8 @@ import PostCard from "@/components/post-card";
 import AppHeader from "@/components/app-header";
 import Navbar from "@/components/navbar";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 async function getPosts() {
   const posts = await prisma.post.findMany({
@@ -21,6 +23,7 @@ async function getPosts() {
     pubName: p.pubName,
     city: p.city,
     createdAt: p.createdAt.toISOString(),
+    userId: p.userId,
     user: p.user,
     avgScore: p.ratings.length
       ? p.ratings.reduce((s: number, r: { score: number }) => s + r.score, 0) / p.ratings.length
@@ -30,7 +33,12 @@ async function getPosts() {
 }
 
 export default async function FeedPage() {
-  const posts = await getPosts();
+  const [posts, session] = await Promise.all([
+    getPosts(),
+    auth.api.getSession({ headers: await headers() }),
+  ]);
+
+  const currentUserId = session?.user?.id ?? null;
 
   return (
     <>
@@ -43,9 +51,12 @@ export default async function FeedPage() {
           </div>
         ) : (
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-            {posts.map((post: Parameters<typeof PostCard>[0]["post"]) => (
+            {posts.map((post) => (
               <div key={post.id} className="break-inside-avoid">
-                <PostCard post={post} />
+                <PostCard
+                  post={post}
+                  isOwner={currentUserId === post.userId}
+                />
               </div>
             ))}
           </div>

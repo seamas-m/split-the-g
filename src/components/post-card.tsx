@@ -1,5 +1,6 @@
 import Image from "next/image";
 import PintRating from "./pint-rating";
+import PostActions from "./post-actions";
 import { MapPin } from "lucide-react";
 
 interface PostCardProps {
@@ -14,9 +15,10 @@ interface PostCardProps {
     totalRatings: number;
     userScore?: number;
   };
+  isOwner?: boolean;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, isOwner }: PostCardProps) {
   return (
     <article className="bg-porter rounded-2xl overflow-hidden border border-malt">
       <div className="relative aspect-[3/4] w-full">
@@ -28,11 +30,16 @@ export default function PostCard({ post }: PostCardProps) {
         />
       </div>
       <div className="p-4 flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-malt flex items-center justify-center text-sm font-bold text-harp">
-            {(post.user.username ?? "?")[0].toUpperCase()}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-malt flex items-center justify-center text-sm font-bold text-harp">
+              {(post.user.username ?? "?")[0].toUpperCase()}
+            </div>
+            <span className="font-medium text-sm text-cream">{post.user.username ?? "anon"}</span>
           </div>
-          <span className="font-medium text-sm text-cream">{post.user.username ?? "anon"}</span>
+          {isOwner && (
+            <PostActions postId={post.id} pubName={post.pubName} city={post.city} />
+          )}
         </div>
 
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
@@ -44,7 +51,6 @@ export default function PostCard({ post }: PostCardProps) {
               <MapPin size={13} /> {post.city}
             </span>
           )}
-
         </div>
 
         <PintRating

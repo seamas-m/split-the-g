@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Logo Preview — Real SVG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0e0c0b;
+      color: #f0e6d3;
+      font-family: system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+      padding: 60px 40px;
+    }
+    .row {
+      display: flex;
+      align-items: flex-start;
+      gap: 72px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+    .label {
+      font-size: 11px;
+      color: #9e8e7e;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .sizes {
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+    }
+    .size-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .size-label { font-size: 10px; color: #2e2724; }
+    .lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lockup span {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #f0e6d3;
+      line-height: 1;
+    }
+    .header-mock {
+      background: #0e0c0b;
+      border: 1px solid #2e2724;
+      padding: 11px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 340px;
+      border-radius: 10px;
+    }
+    .avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: #2e2724;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: bold; color: #c9a454;
+    }
+  </style>
+</head>
+<body>
+
+<!--
+  Using the actual SVG path from the Guinness glass icon.
+  ViewBox: 0 0 76 76
+  Glass body path: M 38,20.58 L 47.5,20.58 C... (main outline)
+  Split line at ~22% from top of glass:
+    Glass top y=20.58, bottom y=58.58, height=38
+    22% = 8.36 units → y = 20.58 + 8.36 ≈ y=29
+    At y=29, glass width spans roughly x=27 to x=49
+-->
+
+<div class="row">
+
+  <!-- LARGE REFERENCE -->
+  <div class="option">
+    <div class="label">Reference (large)</div>
+    <svg width="160" height="160" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Main glass body — outline only -->
+      <path
+        d="M 38,20.5833 L 47.5,20.5833
+           C 49.0833,23.75 49.0833,28.5 49.0833,30.0833
+           C 49.0833,42.75 45.9167,42.75 45.5208,49.0833
+           L 45.9167,57
+           C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833
+           L 31.6667,58.5833
+           C 31.6667,58.5833 30.0833,58.5833 30.0833,57
+           L 30.4792,49.0833
+           C 30.0833,42.75 26.9167,42.75 26.9167,30.0833
+           C 26.9167,28.5 26.9167,23.75 28.5,20.5833
+           L 38,20.5833 Z"
+        stroke="#c9a454" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
+      <!-- Base lip detail -->
+      <path
+        d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+        stroke="#c9a454" stroke-width="1" stroke-linejoin="round" fill="none"/>
+      <!-- Split line at y=30.5 (~26% from top) -->
+      <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <div class="label">base shape ✓</div>
+  </div>
+
+  <!-- SIZES -->
+  <div class="option">
+    <div class="label">Sizes</div>
+    <div class="sizes">
+      <div class="size-block">
+        <svg width="16" height="16" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 38,20.5833 L 47.5,20.5833 C 49.0833,23.75 49.0833,28.5 49.0833,30.0833 C 49.0833,42.75 45.9167,42.75 45.5208,49.0833 L 45.9167,57 C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833 L 31.6667,58.5833 C 31.6667,58.5833 30.0833,58.5833 30.0833,57 L 30.4792,49.0833 C 30.0833,42.75 26.9167,42.75 26.9167,30.0833 C 26.9167,28.5 26.9167,23.75 28.5,20.5833 L 38,20.5833 Z"
+            stroke="#c9a454" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+            stroke="#c9a454" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="size-label">16</span>
+      </div>
+      <div class="size-block">
+        <svg width="24" height="24" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 38,20.5833 L 47.5,20.5833 C 49.0833,23.75 49.0833,28.5 49.0833,30.0833 C 49.0833,42.75 45.9167,42.75 45.5208,49.0833 L 45.9167,57 C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833 L 31.6667,58.5833 C 31.6667,58.5833 30.0833,58.5833 30.0833,57 L 30.4792,49.0833 C 30.0833,42.75 26.9167,42.75 26.9167,30.0833 C 26.9167,28.5 26.9167,23.75 28.5,20.5833 L 38,20.5833 Z"
+            stroke="#c9a454" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+            stroke="#c9a454" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="size-label">24</span>
+      </div>
+      <div class="size-block">
+        <svg width="36" height="36" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 38,20.5833 L 47.5,20.5833 C 49.0833,23.75 49.0833,28.5 49.0833,30.0833 C 49.0833,42.75 45.9167,42.75 45.5208,49.0833 L 45.9167,57 C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833 L 31.6667,58.5833 C 31.6667,58.5833 30.0833,58.5833 30.0833,57 L 30.4792,49.0833 C 30.0833,42.75 26.9167,42.75 26.9167,30.0833 C 26.9167,28.5 26.9167,23.75 28.5,20.5833 L 38,20.5833 Z"
+            stroke="#c9a454" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+            stroke="#c9a454" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="size-label">36</span>
+      </div>
+      <div class="size-block">
+        <svg width="56" height="56" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 38,20.5833 L 47.5,20.5833 C 49.0833,23.75 49.0833,28.5 49.0833,30.0833 C 49.0833,42.75 45.9167,42.75 45.5208,49.0833 L 45.9167,57 C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833 L 31.6667,58.5833 C 31.6667,58.5833 30.0833,58.5833 30.0833,57 L 30.4792,49.0833 C 30.0833,42.75 26.9167,42.75 26.9167,30.0833 C 26.9167,28.5 26.9167,23.75 28.5,20.5833 L 38,20.5833 Z"
+            stroke="#c9a454" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+            stroke="#c9a454" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="size-label">56</span>
+      </div>
+    </div>
+
+    <!-- Lockup -->
+    <div class="lockup">
+      <svg width="28" height="28" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 38,20.5833 L 47.5,20.5833 C 49.0833,23.75 49.0833,28.5 49.0833,30.0833 C 49.0833,42.75 45.9167,42.75 45.5208,49.0833 L 45.9167,57 C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833 L 31.6667,58.5833 C 31.6667,58.5833 30.0833,58.5833 30.0833,57 L 30.4792,49.0833 C 30.0833,42.75 26.9167,42.75 26.9167,30.0833 C 26.9167,28.5 26.9167,23.75 28.5,20.5833 L 38,20.5833 Z"
+          stroke="#c9a454" stroke-width="2" stroke-linejoin="round" fill="none"/>
+        <path d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+          stroke="#c9a454" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+        <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <span>Split the G</span>
+    </div>
+
+    <!-- Header mock -->
+    <div class="header-mock">
+      <div class="lockup">
+        <svg width="22" height="22" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 38,20.5833 L 47.5,20.5833 C 49.0833,23.75 49.0833,28.5 49.0833,30.0833 C 49.0833,42.75 45.9167,42.75 45.5208,49.0833 L 45.9167,57 C 45.9167,58.5833 44.3333,58.5833 44.3333,58.5833 L 31.6667,58.5833 C 31.6667,58.5833 30.0833,58.5833 30.0833,57 L 30.4792,49.0833 C 30.0833,42.75 26.9167,42.75 26.9167,30.0833 C 26.9167,28.5 26.9167,23.75 28.5,20.5833 L 38,20.5833 Z"
+            stroke="#c9a454" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
+            stroke="#c9a454" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Playfair Display',serif;font-size:17px;color:#f0e6d3;line-height:1;">Split the G</span>
+      </div>
+      <div class="avatar">S</div>
+    </div>
+    <div class="label">in header</div>
+  </div>
+
+</div>
+</body>
+</html>
