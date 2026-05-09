@@ -1,6 +1,7 @@
 import Image from "next/image";
 import PintRating from "./pint-rating";
 import PostActions from "./post-actions";
+import TimeAgo from "./time-ago";
 import { MapPin } from "lucide-react";
 
 interface PostCardProps {
@@ -35,7 +36,10 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
             <div className="w-8 h-8 rounded-full bg-malt flex items-center justify-center text-sm font-bold text-harp">
               {(post.user.username ?? "?")[0].toUpperCase()}
             </div>
-            <span className="font-medium text-sm text-cream">{post.user.username ?? "anon"}</span>
+            <div className="flex flex-col">
+              <span className="font-medium text-sm text-cream leading-tight">{post.user.username ?? "anon"}</span>
+              <TimeAgo date={post.createdAt} />
+            </div>
           </div>
           {isOwner && (
             <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
