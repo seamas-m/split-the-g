@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageCircle, X, Send, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { MessageCircle, X, Send, Trash2, MapPin } from "lucide-react";
 import { timeAgo } from "@/lib/time";
 import { useSession } from "@/lib/auth-client";
 
@@ -16,9 +17,13 @@ interface Comment {
 interface CommentsSheetProps {
   postId: string;
   initialCount: number;
+  imageUrl: string;
+  pubName: string | null;
+  city: string | null;
+  username: string | null;
 }
 
-export default function CommentsSheet({ postId, initialCount }: CommentsSheetProps) {
+export default function CommentsSheet({ postId, initialCount, imageUrl, pubName, city, username }: CommentsSheetProps) {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -106,6 +111,20 @@ export default function CommentsSheet({ postId, initialCount }: CommentsSheetPro
               <button onClick={() => setOpen(false)} className="text-foam hover:text-cream transition-colors">
                 <X size={18} />
               </button>
+            </div>
+
+            {/* Post context */}
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-malt shrink-0 bg-stout/30">
+              <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0">
+                <Image src={imageUrl} alt="Post" fill className="object-cover" />
+              </div>
+              <div className="flex flex-col min-w-0">
+                {pubName && <span className="text-sm font-semibold text-cream truncate">{pubName}</span>}
+                <div className="flex items-center gap-2 text-xs text-foam/70">
+                  {city && <span className="flex items-center gap-0.5"><MapPin size={10} />{city}</span>}
+                  {username && <span>@{username}</span>}
+                </div>
+              </div>
             </div>
 
             {/* Comments list */}

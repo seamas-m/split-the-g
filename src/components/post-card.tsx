@@ -70,7 +70,14 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
             totalRatings={post.totalRatings}
             userScore={post.userScore}
           />
-          <CommentsSheet postId={post.id} initialCount={post.totalComments} />
+          <CommentsSheet
+            postId={post.id}
+            initialCount={post.totalComments}
+            imageUrl={post.imageUrl}
+            pubName={post.pubName}
+            city={post.city}
+            username={post.user.username}
+          />
         </div>
       </div>
     </article>
