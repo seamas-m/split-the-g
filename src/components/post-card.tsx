@@ -26,6 +26,7 @@ interface PostCardProps {
 export default function PostCard({ post, isOwner }: PostCardProps) {
   return (
     <article className="relative bg-porter rounded-2xl overflow-hidden border border-malt">
+      {/* Photo */}
       <div className="relative aspect-[3/4] w-full">
         <Image
           src={post.imageUrl}
@@ -33,46 +34,49 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
           fill
           className="object-cover"
         />
+        {/* Edit button sits over image so it never affects card height */}
+        {isOwner && (
+          <div className="absolute top-2.5 right-2.5">
+            <PostActions
+              postId={post.id}
+              imageUrl={post.imageUrl}
+              pubName={post.pubName}
+              city={post.city}
+            />
+          </div>
+        )}
       </div>
 
       <div className="p-4 flex flex-col gap-2">
-        {/* Pub name — most prominent */}
-        {post.pubName && (
-          <div className="flex items-start justify-between gap-2">
+        {/* Location — always reserves the same vertical space so the grid stays aligned */}
+        <div className="min-h-[2.75rem] flex flex-col justify-center gap-0.5">
+          {post.pubName ? (
             <span className="font-bold text-base text-cream leading-tight">{post.pubName}</span>
-            {isOwner && (
-              <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
-            )}
-          </div>
-        )}
-
-        {/* City */}
-        {post.city && (
-          <span className="flex items-center gap-1 text-xs text-foam">
-            <MapPin size={11} /> {post.city}
-          </span>
-        )}
-
-        {/* If no pub name, show actions in the row with the user */}
-        <div className="flex items-center justify-between mt-1">
-          <Link
-            href={`/profile/${post.user.username}`}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-          >
-            <div className="w-6 h-6 rounded-full bg-malt flex items-center justify-center text-xs font-bold text-harp">
-              {(post.user.username ?? "?")[0].toUpperCase()}
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-foam leading-tight">{post.user.username ?? "anon"}</span>
-              <TimeAgo date={post.createdAt} />
-            </div>
-          </Link>
-          {!post.pubName && isOwner && (
-            <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
+          ) : (
+            <span className="text-sm text-foam/30 italic leading-tight">No location</span>
+          )}
+          {post.city && (
+            <span className="flex items-center gap-1 text-xs text-foam">
+              <MapPin size={11} /> {post.city}
+            </span>
           )}
         </div>
 
-        {/* Actions row */}
+        {/* User row */}
+        <Link
+          href={`/profile/${post.user.username}`}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <div className="w-6 h-6 rounded-full bg-malt flex items-center justify-center text-xs font-bold text-harp shrink-0">
+            {(post.user.username ?? "?")[0].toUpperCase()}
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-foam leading-tight">{post.user.username ?? "anon"}</span>
+            <TimeAgo date={post.createdAt} />
+          </div>
+        </Link>
+
+        {/* Actions */}
         <div className="flex items-center gap-4 pt-1 border-t border-malt/50">
           <CheersButton
             postId={post.id}

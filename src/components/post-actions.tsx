@@ -91,10 +91,10 @@ export default function PostActions({ postId, imageUrl, pubName, city }: PostAct
     <>
       <button
         onClick={openModal}
-        className="p-1 rounded-lg text-foam hover:text-cream hover:bg-malt transition-colors"
+        className="p-1.5 rounded-lg bg-stout/60 backdrop-blur-sm text-cream hover:bg-stout/80 transition-colors"
         aria-label="Edit post"
       >
-        <MoreHorizontal size={18} />
+        <MoreHorizontal size={16} />
       </button>
 
       {open && (
