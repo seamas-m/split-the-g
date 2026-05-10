@@ -95,7 +95,13 @@ export default function NotificationsSheet() {
                 <p className="text-foam text-sm text-center py-8">Loading…</p>
               )}
               {!loading && notifications.length === 0 && (
-                <p className="text-foam text-sm text-center py-8 italic">No activity yet.</p>
+                <div className="flex flex-col items-center justify-center gap-3 py-16 px-8 text-center">
+                  <Bell size={32} className="text-malt" />
+                  <p className="text-cream text-sm font-medium">No activity yet</p>
+                  <p className="text-foam text-xs leading-relaxed">
+                    When someone cheers or comments on your pint, you&apos;ll see it here.
+                  </p>
+                </div>
               )}
               {notifications.map((n) => {
                 const actorName = n.actor.username ?? n.actor.name;
