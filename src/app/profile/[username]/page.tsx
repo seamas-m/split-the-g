@@ -20,6 +20,7 @@ async function getUserProfile(username: string) {
     include: {
       user: { select: { username: true, image: true } },
       ratings: { select: { score: true } },
+      comments: { select: { id: true } },
     },
   });
 
@@ -35,6 +36,7 @@ async function getUserProfile(username: string) {
       ? p.ratings.reduce((s, r) => s + r.score, 0) / p.ratings.length
       : 0,
     totalRatings: p.ratings.length,
+    totalComments: p.comments.length,
   }));
 
   const allRatings = posts.flatMap((p) => p.ratings.map((r) => r.score));

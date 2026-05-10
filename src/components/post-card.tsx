@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PintRating from "./pint-rating";
 import PostActions from "./post-actions";
+import CommentsSheet from "./comments-sheet";
 import TimeAgo from "./time-ago";
 import { MapPin } from "lucide-react";
 
@@ -15,6 +16,7 @@ interface PostCardProps {
     user: { username: string | null; image: string | null };
     avgScore: number;
     totalRatings: number;
+    totalComments: number;
     userScore?: number;
   };
   isOwner?: boolean;
@@ -61,12 +63,15 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
           )}
         </div>
 
-        <PintRating
-          postId={post.id}
-          avgScore={post.avgScore}
-          totalRatings={post.totalRatings}
-          userScore={post.userScore}
-        />
+        <div className="flex items-center justify-between">
+          <PintRating
+            postId={post.id}
+            avgScore={post.avgScore}
+            totalRatings={post.totalRatings}
+            userScore={post.userScore}
+          />
+          <CommentsSheet postId={post.id} initialCount={post.totalComments} />
+        </div>
       </div>
     </article>
   );

@@ -20,6 +20,7 @@ model User {
 
   posts    Post[]
   ratings  Rating[]
+  comments Comment[]
   sessions Session[]
   accounts Account[]
 }
@@ -70,8 +71,20 @@ model Post {
   city      String?
   createdAt DateTime @default(now())
 
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ratings Rating[]
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ratings  Rating[]
+  comments Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String
+  userId    String
+  text      String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Rating {

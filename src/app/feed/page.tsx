@@ -14,6 +14,7 @@ async function getPosts() {
     include: {
       user: { select: { username: true, image: true } },
       ratings: { select: { score: true } },
+      comments: { select: { id: true } },
     },
   });
 
@@ -29,6 +30,7 @@ async function getPosts() {
       ? p.ratings.reduce((s: number, r: { score: number }) => s + r.score, 0) / p.ratings.length
       : 0,
     totalRatings: p.ratings.length,
+    totalComments: p.comments.length,
   }));
 }
 
