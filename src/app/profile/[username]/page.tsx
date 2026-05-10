@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 import PostCard from "@/components/post-card";
+import FollowButton from "@/components/follow-button";
 import { mapPost } from "@/lib/map-post";
 import { MapPin, Settings } from "lucide-react";
 
@@ -13,15 +14,23 @@ async function getUserProfile(username: string, currentUserId: string | null) {
   const user = await prisma.user.findFirst({ where: { username } });
   if (!user) return null;
 
-  const posts = await prisma.post.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-    include: {
-      user: { select: { username: true, image: true } },
-      ratings: { select: { score: true, userId: true } },
-      comments: { select: { id: true } },
-    },
-  });
+  const [posts, followerCount, isFollowing] = await Promise.all([
+    prisma.post.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+      include: {
+        user: { select: { username: true, image: true } },
+        ratings: { select: { score: true, userId: true } },
+        comments: { select: { id: true } },
+      },
+    }),
+    prisma.follow.count({ where: { followingId: user.id } }),
+    currentUserId
+      ? prisma.follow.findUnique({
+          where: { followerId_followingId: { followerId: currentUserId, followingId: user.id } },
+        }).then(Boolean)
+      : Promise.resolve(false),
+  ]);
 
   const mappedPosts = posts.map((p) => mapPost(p, currentUserId));
   const totalNailed = posts.reduce((s, p) => s + p.ratings.filter((r) => r.score === 1).length, 0);
@@ -32,7 +41,7 @@ async function getUserProfile(username: string, currentUserId: string | null) {
   }
   const topCity = Object.entries(cityCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 
-  return { user, posts: mappedPosts, totalNailed, topCity };
+  return { user, posts: mappedPosts, totalNailed, topCity, followerCount, isFollowing };
 }
 
 export default async function UserProfilePage({
@@ -47,7 +56,7 @@ export default async function UserProfilePage({
 
   if (!profile) notFound();
 
-  const { user, posts, totalNailed, topCity } = profile;
+  const { user, posts, totalNailed, topCity, followerCount, isFollowing } = profile;
   const isOwnProfile = currentUserId === user.id;
 
   return (
@@ -64,6 +73,16 @@ export default async function UserProfilePage({
               <Settings size={12} /> Account settings
             </Link>
           )}
+          {!isOwnProfile && currentUserId && (
+            <FollowButton
+              followingId={user.id}
+              initialFollowing={isFollowing}
+              followerCount={followerCount}
+            />
+          )}
+          {!isOwnProfile && !currentUserId && followerCount > 0 && (
+            <span className="text-xs text-foam/50">{followerCount} follower{followerCount !== 1 ? "s" : ""}</span>
+          )}
         </div>
 
         <div className="flex items-center gap-8">
@@ -75,6 +94,12 @@ export default async function UserProfilePage({
             <div className="flex flex-col items-center">
               <span className="text-xl font-bold text-cream">{totalNailed}</span>
               <span className="text-xs text-foam">nailed it</span>
+            </div>
+          )}
+          {isOwnProfile && (
+            <div className="flex flex-col items-center">
+              <span className="text-xl font-bold text-cream">{followerCount}</span>
+              <span className="text-xs text-foam">followers</span>
             </div>
           )}
           {topCity && (

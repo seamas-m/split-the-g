@@ -7,11 +7,24 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const cursor = searchParams.get("cursor");
   const limit = Math.min(Number(searchParams.get("limit") ?? 12), 50);
+  const tab = searchParams.get("tab"); // "following" | null
 
   const session = await auth.api.getSession({ headers: await headers() });
   const currentUserId = session?.user?.id ?? null;
 
+  // Build where clause for following feed
+  let whereClause = {};
+  if (tab === "following" && currentUserId) {
+    const followedUsers = await prisma.follow.findMany({
+      where: { followerId: currentUserId },
+      select: { followingId: true },
+    });
+    const followingIds = followedUsers.map((f) => f.followingId);
+    whereClause = { userId: { in: followingIds } };
+  }
+
   const posts = await prisma.post.findMany({
+    where: whereClause,
     orderBy: { createdAt: "desc" },
     take: limit + 1,
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),

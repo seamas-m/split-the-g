@@ -25,6 +25,8 @@ model User {
   accounts               Account[]
   notificationsReceived  Notification[] @relation("NotificationRecipient")
   notificationsSent      Notification[] @relation("NotificationActor")
+  following              Follow[]       @relation("Follower")
+  followers              Follow[]       @relation("Following")
 }
 
 model Session {
@@ -103,6 +105,18 @@ model Notification {
   user  User @relation("NotificationRecipient", fields: [userId], references: [id], onDelete: Cascade)
   actor User @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
   post  Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
 }
 
 model Rating {

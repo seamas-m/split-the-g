@@ -21,19 +21,27 @@ interface Post {
 interface InfiniteFeedProps {
   initialPosts: Post[];
   initialCursor: string | null;
+  feedType?: "forYou" | "following";
 }
 
-export default function InfiniteFeed({ initialPosts, initialCursor }: InfiniteFeedProps) {
+export default function InfiniteFeed({ initialPosts, initialCursor, feedType = "forYou" }: InfiniteFeedProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [cursor, setCursor] = useState<string | null>(initialCursor);
   const [loading, setLoading] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
+  // Reset when feedType changes
+  useEffect(() => {
+    setPosts(initialPosts);
+    setCursor(initialCursor);
+  }, [feedType, initialPosts, initialCursor]);
+
   const fetchMore = useCallback(async () => {
     if (!cursor || loading) return;
     setLoading(true);
     try {
-      const url = `/api/posts?limit=12${cursor ? `&cursor=${cursor}` : ""}`;
+      const tabParam = feedType === "following" ? "&tab=following" : "";
+      const url = `/api/posts?limit=12${cursor ? `&cursor=${cursor}` : ""}${tabParam}`;
       const res = await fetch(url);
       const data = await res.json();
       setPosts((prev) => [...prev, ...data.posts]);
@@ -41,7 +49,7 @@ export default function InfiniteFeed({ initialPosts, initialCursor }: InfiniteFe
     } finally {
       setLoading(false);
     }
-  }, [cursor, loading]);
+  }, [cursor, loading, feedType]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
