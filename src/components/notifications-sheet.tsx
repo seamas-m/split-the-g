@@ -74,7 +74,7 @@ export default function NotificationsSheet() {
 
       {/* Sheet */}
       {open && (
-        <div className="fixed inset-0 z-[60] flex items-end justify-center">
+        <div className="fixed inset-x-0 bottom-0 top-[60px] z-[60] flex items-end justify-center">
           <div className="absolute inset-0 bg-stout/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
 
           <div
