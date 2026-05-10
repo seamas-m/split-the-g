@@ -19,8 +19,7 @@ export default function SignupPage() {
     setError("");
     setLoading(true);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = await (signUp.email as any)({
+      const result = await signUp.email({
         email,
         password,
         name: username,
