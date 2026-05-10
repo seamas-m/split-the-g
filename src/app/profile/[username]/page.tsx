@@ -4,8 +4,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 import PostCard from "@/components/post-card";
-import Navbar from "@/components/navbar";
-import AppHeader from "@/components/app-header";
 import { MapPin, Settings } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -64,9 +62,7 @@ export default async function UserProfilePage({
   const isOwnProfile = currentUserId === user.id;
 
   return (
-    <>
-      <AppHeader />
-      <main className="flex-1 pb-24 w-full max-w-5xl mx-auto">
+    <main className="flex-1 pb-24 w-full max-w-5xl mx-auto">
         {/* Profile hero */}
         <div className="flex flex-col items-center gap-4 px-6 py-8 border-b border-malt">
           <div className="w-20 h-20 rounded-full bg-malt flex items-center justify-center text-3xl font-bold text-harp font-display">
@@ -132,8 +128,6 @@ export default async function UserProfilePage({
             </div>
           )}
         </div>
-      </main>
-      <Navbar />
-    </>
+    </main>
   );
 }

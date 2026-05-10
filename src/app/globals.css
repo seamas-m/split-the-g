@@ -2,7 +2,7 @@
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
-  --font-display: var(--font-playfair);
+  --font-display: var(--font-fraunces);
 
   /* Guinness palette */
   --color-stout:  #0e0c0b;   /* deep background */

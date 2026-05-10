@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Playfair_Display } from "next/font/google";
+import { Geist, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  axes: ["opsz"],
+});
 
 export const metadata: Metadata = {
   title: "Split the G",
@@ -12,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${playfair.variable} h-full antialiased`}>
+    <html lang="en" className={`${geist.variable} ${fraunces.variable} h-full antialiased`}>
       <body className="min-h-full bg-stout text-cream flex flex-col">{children}</body>
     </html>
   );
