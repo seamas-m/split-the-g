@@ -21,10 +21,26 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const { text } = await req.json();
   if (!text?.trim()) return NextResponse.json({ error: "Text required" }, { status: 400 });
 
-  const comment = await prisma.comment.create({
-    data: { postId: id, userId: session.user.id, text: text.trim() },
-    include: { user: { select: { username: true, name: true } } },
-  });
+  const [comment, post] = await Promise.all([
+    prisma.comment.create({
+      data: { postId: id, userId: session.user.id, text: text.trim() },
+      include: { user: { select: { username: true, name: true } } },
+    }),
+    prisma.post.findUnique({ where: { id }, select: { userId: true } }),
+  ]);
+
+  // Notify post owner (skip if commenting on own post)
+  if (post && post.userId !== session.user.id) {
+    await prisma.notification.create({
+      data: {
+        userId: post.userId,
+        actorId: session.user.id,
+        postId: id,
+        type: "comment",
+        body: text.trim().slice(0, 80),
+      },
+    });
+  }
 
   return NextResponse.json(comment, { status: 201 });
 }

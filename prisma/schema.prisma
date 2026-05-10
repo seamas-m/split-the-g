@@ -18,11 +18,13 @@ model User {
   updatedAt     DateTime
   username      String?   @unique
 
-  posts    Post[]
-  ratings  Rating[]
-  comments Comment[]
-  sessions Session[]
-  accounts Account[]
+  posts                  Post[]
+  ratings                Rating[]
+  comments               Comment[]
+  sessions               Session[]
+  accounts               Account[]
+  notificationsReceived  Notification[] @relation("NotificationRecipient")
+  notificationsSent      Notification[] @relation("NotificationActor")
 }
 
 model Session {
@@ -71,9 +73,10 @@ model Post {
   city      String?
   createdAt DateTime @default(now())
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ratings  Rating[]
-  comments Comment[]
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ratings       Rating[]
+  comments      Comment[]
+  notifications Notification[]
 }
 
 model Comment {
@@ -85,6 +88,21 @@ model Comment {
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   // recipient
+  actorId   String   // who triggered it
+  postId    String
+  type      String   // "cheers" | "comment"
+  body      String?  // comment preview
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user  User @relation("NotificationRecipient", fields: [userId], references: [id], onDelete: Cascade)
+  actor User @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+  post  Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Rating {

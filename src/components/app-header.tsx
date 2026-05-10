@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
+import NotificationsSheet from "./notifications-sheet";
 
 function SplitGMark({ size = 28 }: { size?: number }) {
   return (
@@ -34,7 +35,6 @@ export default function AppHeader() {
 
   return (
     <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-3 z-40 flex items-center justify-between">
-      {/* Brand lockup — icon and wordmark share the same baseline */}
       <Link href="/feed" className="flex items-center gap-2.5 group">
         <SplitGMark size={36} />
         <span className="font-display text-xl font-bold text-cream tracking-tight group-hover:text-harp transition-colors leading-none">
@@ -43,15 +43,19 @@ export default function AppHeader() {
       </Link>
 
       {session && (
-        <Link
-          href={`/profile/${(session.user as any).username ?? session.user.name}`}
-          className="flex flex-col items-center gap-0.5 text-foam hover:text-harp transition-colors"
-        >
-          <div className="w-8 h-8 rounded-full bg-malt border border-malt hover:border-harp transition-colors flex items-center justify-center text-xs font-bold text-harp">
-            {(session.user.name ?? session.user.email ?? "?")[0].toUpperCase()}
-          </div>
-          <span className="text-[10px] leading-none">Profile</span>
-        </Link>
+        <div className="flex items-center gap-4">
+          <NotificationsSheet />
+
+          <Link
+            href={`/profile/${(session.user as any).username ?? session.user.name}`}
+            className="flex flex-col items-center gap-0.5 text-foam hover:text-harp transition-colors"
+          >
+            <div className="w-8 h-8 rounded-full bg-malt border border-malt hover:border-harp transition-colors flex items-center justify-center text-xs font-bold text-harp">
+              {(session.user.name ?? session.user.email ?? "?")[0].toUpperCase()}
+            </div>
+            <span className="text-[10px] leading-none">Profile</span>
+          </Link>
+        </div>
       )}
     </header>
   );
