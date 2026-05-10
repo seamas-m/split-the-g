@@ -133,7 +133,15 @@ export default function CommentsSheet({ postId, initialCount, imageUrl, pubName,
                 <p className="text-foam text-sm text-center py-8">Loading…</p>
               )}
               {!loading && comments.length === 0 && (
-                <p className="text-foam text-sm text-center py-8 italic">No comments yet. Be the first.</p>
+                <div className="flex flex-col items-center gap-3 py-8">
+                  <p className="text-foam text-sm italic">No comments yet.</p>
+                  <button
+                    onClick={() => inputRef.current?.focus()}
+                    className="text-harp text-sm font-semibold hover:opacity-80 transition-opacity"
+                  >
+                    Be the first →
+                  </button>
+                </div>
               )}
               {comments.map((comment) => {
                 const isOwn = session?.user?.id === comment.userId;

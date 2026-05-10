@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { uploadPintPhoto } from "@/lib/cloudinary";
@@ -17,6 +17,12 @@ export default function UploadPage() {
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Auto-open camera/file picker when navigating to this page
+  useEffect(() => {
+    const t = setTimeout(() => fileRef.current?.click(), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];

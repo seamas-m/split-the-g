@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import PintRating from "./pint-rating";
+import CheersButton from "./cheers-button";
 import PostActions from "./post-actions";
 import CommentsSheet from "./comments-sheet";
 import TimeAgo from "./time-ago";
@@ -13,9 +13,10 @@ interface PostCardProps {
     pubName: string | null;
     city: string | null;
     createdAt: string;
+    userId: string;
     user: { username: string | null; image: string | null };
-    avgScore: number;
-    totalRatings: number;
+    totalCheers: number;
+    hasCheersed: boolean;
     totalComments: number;
     userScore?: number;
   };
@@ -33,42 +34,50 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
           className="object-cover"
         />
       </div>
-      <div className="p-4 flex flex-col gap-3">
-        <div className="flex items-center justify-between">
+
+      <div className="p-4 flex flex-col gap-2">
+        {/* Pub name — most prominent */}
+        {post.pubName && (
+          <div className="flex items-start justify-between gap-2">
+            <span className="font-bold text-base text-cream leading-tight">{post.pubName}</span>
+            {isOwner && (
+              <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
+            )}
+          </div>
+        )}
+
+        {/* City */}
+        {post.city && (
+          <span className="flex items-center gap-1 text-xs text-foam">
+            <MapPin size={11} /> {post.city}
+          </span>
+        )}
+
+        {/* If no pub name, show actions in the row with the user */}
+        <div className="flex items-center justify-between mt-1">
           <Link
             href={`/profile/${post.user.username}`}
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-full bg-malt flex items-center justify-center text-sm font-bold text-harp">
+            <div className="w-6 h-6 rounded-full bg-malt flex items-center justify-center text-xs font-bold text-harp">
               {(post.user.username ?? "?")[0].toUpperCase()}
             </div>
             <div className="flex flex-col">
-              <span className="font-medium text-sm text-cream leading-tight">{post.user.username ?? "anon"}</span>
+              <span className="text-xs text-foam leading-tight">{post.user.username ?? "anon"}</span>
               <TimeAgo date={post.createdAt} />
             </div>
           </Link>
-          {isOwner && (
+          {!post.pubName && isOwner && (
             <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
           )}
         </div>
 
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-          {post.pubName && (
-            <span className="font-semibold text-cream">{post.pubName}</span>
-          )}
-          {post.city && (
-            <span className="flex items-center gap-1 text-foam">
-              <MapPin size={13} /> {post.city}
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between">
-          <PintRating
+        {/* Actions row */}
+        <div className="flex items-center gap-4 pt-1 border-t border-malt/50">
+          <CheersButton
             postId={post.id}
-            avgScore={post.avgScore}
-            totalRatings={post.totalRatings}
-            userScore={post.userScore}
+            totalCheers={post.totalCheers}
+            hasCheersed={post.hasCheersed}
           />
           <CommentsSheet
             postId={post.id}

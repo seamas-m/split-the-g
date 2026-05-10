@@ -3,16 +3,44 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const cursor = searchParams.get("cursor");
+  const limit = Math.min(Number(searchParams.get("limit") ?? 12), 50);
+
+  const session = await auth.api.getSession({ headers: await headers() });
+  const currentUserId = session?.user?.id ?? null;
+
   const posts = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
-    take: 50,
+    take: limit + 1,
+    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     include: {
       user: { select: { username: true, image: true } },
-      ratings: { select: { score: true } },
+      ratings: { select: { score: true, userId: true } },
+      comments: { select: { id: true } },
     },
   });
-  return NextResponse.json(posts);
+
+  const hasMore = posts.length > limit;
+  const page = posts.slice(0, limit);
+  const nextCursor = hasMore ? page[page.length - 1].id : null;
+
+  const mapped = page.map((p) => ({
+    id: p.id,
+    imageUrl: p.imageUrl,
+    pubName: p.pubName,
+    city: p.city,
+    createdAt: p.createdAt.toISOString(),
+    userId: p.userId,
+    user: p.user,
+    totalCheers: p.ratings.length,
+    hasCheersed: currentUserId ? p.ratings.some((r) => r.userId === currentUserId) : false,
+    totalComments: p.comments.length,
+    isOwner: currentUserId === p.userId,
+  }));
+
+  return NextResponse.json({ posts: mapped, nextCursor });
 }
 
 export async function POST(req: NextRequest) {

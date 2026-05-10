@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
 function SplitGMark({ size = 28 }: { size?: number }) {
@@ -34,22 +33,29 @@ export default function AppHeader() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-4 z-40 flex items-center justify-between">
-      <Link href="/feed" className="flex items-center gap-3">
-        <SplitGMark size={40} />
-        <span className="font-display text-2xl font-bold text-cream tracking-tight leading-none">
-          Split the G
-        </span>
+    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-3 z-40 flex items-center justify-between">
+      {/* Brand lockup — icon and wordmark share the same baseline */}
+      <Link href="/feed" className="flex items-center gap-2.5 group">
+        <SplitGMark size={36} />
+        <div className="flex flex-col leading-none">
+          <span className="font-display text-xl font-bold text-cream tracking-tight group-hover:text-harp transition-colors">
+            Split the G
+          </span>
+          <span className="text-[10px] text-foam/50 tracking-widest uppercase leading-tight">
+            pint ratings
+          </span>
+        </div>
       </Link>
 
       {session && (
         <Link
           href={`/profile/${(session.user as any).username ?? session.user.name}`}
-          className="flex items-center gap-2 text-foam hover:text-cream transition-colors"
+          className="flex flex-col items-center gap-0.5 text-foam hover:text-harp transition-colors"
         >
           <div className="w-8 h-8 rounded-full bg-malt border border-malt hover:border-harp transition-colors flex items-center justify-center text-xs font-bold text-harp">
             {(session.user.name ?? session.user.email ?? "?")[0].toUpperCase()}
           </div>
+          <span className="text-[10px] leading-none">Profile</span>
         </Link>
       )}
     </header>

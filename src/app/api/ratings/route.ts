@@ -7,16 +7,18 @@ export async function POST(req: NextRequest) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { postId, score } = await req.json();
-  if (!postId || typeof score !== "number" || score < 1 || score > 5) {
-    return NextResponse.json({ error: "postId and score (1-5) required" }, { status: 400 });
-  }
+  const { postId } = await req.json();
+  if (!postId) return NextResponse.json({ error: "postId required" }, { status: 400 });
 
-  const rating = await prisma.rating.upsert({
+  const existing = await prisma.rating.findUnique({
     where: { postId_userId: { postId, userId: session.user.id } },
-    create: { postId, userId: session.user.id, score },
-    update: { score },
   });
 
-  return NextResponse.json(rating);
+  if (existing) {
+    await prisma.rating.delete({ where: { postId_userId: { postId, userId: session.user.id } } });
+    return NextResponse.json({ cheersed: false });
+  } else {
+    await prisma.rating.create({ data: { postId, userId: session.user.id, score: 1 } });
+    return NextResponse.json({ cheersed: true });
+  }
 }
