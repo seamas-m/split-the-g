@@ -41,67 +41,70 @@ export default function AboutPage() {
             What is<br />Splitting the G?
           </h1>
           <p className="text-foam text-sm leading-relaxed max-w-xs">
-            Every Guinness poured has a line. The question is — where does that line fall?
+            One pint. One sip. One very small target.
           </p>
         </div>
 
-        {/* The rule */}
+        {/* The challenge */}
         <section className="bg-porter border border-malt rounded-2xl p-6 flex flex-col gap-3">
-          <h2 className="font-display text-2xl font-bold text-harp">The Rule</h2>
+          <h2 className="font-display text-2xl font-bold text-harp">The Challenge</h2>
           <p className="text-cream/90 text-sm leading-relaxed">
-            A perfectly poured Guinness should have the split — where the dark stout meets the creamy head — land right in the middle of the golden harp on the glass.
+            Take a freshly poured Guinness. Now take a single sip — just one — and set the glass back down.
           </p>
           <p className="text-cream/90 text-sm leading-relaxed">
-            That&apos;s the <span className="text-harp font-semibold">G</span>. And if the head sits exactly at the G, you&apos;ve got yourself a <span className="text-harp font-semibold">split</span>.
+            The goal: land the line where the dark stout meets the creamy white head <span className="text-harp font-semibold">exactly inside the gap of the letter G</span> on the Guinness pint glass.
+          </p>
+          <p className="text-cream/90 text-sm leading-relaxed">
+            That gap is tiny. The margin for error is basically zero. That&apos;s the whole point.
           </p>
         </section>
 
-        {/* Why it matters */}
-        <section className="flex flex-col gap-3">
-          <h2 className="font-display text-2xl font-bold text-cream">Why does it matter?</h2>
-          <p className="text-foam text-sm leading-relaxed">
-            It doesn&apos;t. And that&apos;s the point.
-          </p>
-          <p className="text-foam text-sm leading-relaxed">
-            Splitting the G is the kind of thing that only people who care too much about a perfect pint care about. It&apos;s a mark of a bartender who takes their time. A two-part pour, a proper settle, a steady hand. No rushing. No sloppiness.
-          </p>
-          <p className="text-foam text-sm leading-relaxed">
-            It&apos;s also a great excuse to order another one and study it closely.
-          </p>
-        </section>
-
-        {/* How to spot one */}
-        <section className="bg-porter border border-malt rounded-2xl p-6 flex flex-col gap-4">
-          <h2 className="font-display text-2xl font-bold text-harp">How to spot a Split</h2>
-          <ol className="flex flex-col gap-3">
+        {/* How to do it */}
+        <section className="flex flex-col gap-4">
+          <h2 className="font-display text-2xl font-bold text-cream">How to play</h2>
+          <ol className="flex flex-col gap-4">
             {[
-              { n: "01", text: "Order a Guinness. Obviously." },
-              { n: "02", text: "Wait for the two-part pour. If they rush it, red flag." },
-              { n: "03", text: "When it arrives, check the glass. Find the harp." },
-              { n: "04", text: "Does the creamy head meet the dark body right at the G? That's a split." },
-              { n: "05", text: "Take a photo. Post it here. Cheers it. Repeat." },
-            ].map(({ n, text }) => (
+              { n: "01", title: "Start fresh", text: "Get a properly poured Guinness in a branded pint glass. Let it settle — you know the deal." },
+              { n: "02", title: "Find the G", text: "Locate the letter G in the Guinness logo on the glass. That gap in the G is your target. Study it." },
+              { n: "03", title: "Estimate", text: "Gauge how much liquid sits above the G. That's exactly how much you need to drink. Not a drop more, not a drop less." },
+              { n: "04", title: "One sip", text: "Take one clean sip. No gulping, no cheating. One smooth pull." },
+              { n: "05", title: "Check", text: "Set the glass down on a flat surface and check the line. Did the foam meet the stout right inside the G? You split it." },
+            ].map(({ n, title, text }) => (
               <li key={n} className="flex gap-4 items-start">
-                <span className="text-harp font-display font-bold text-lg shrink-0 leading-tight">{n}</span>
-                <p className="text-cream/90 text-sm leading-relaxed">{text}</p>
+                <span className="text-harp font-display font-bold text-lg shrink-0 leading-tight pt-0.5">{n}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-cream font-semibold text-sm">{title}</span>
+                  <p className="text-foam text-sm leading-relaxed">{text}</p>
+                </div>
               </li>
             ))}
           </ol>
         </section>
 
-        {/* Pro tips */}
+        {/* Why it's hard */}
+        <section className="bg-porter border border-malt rounded-2xl p-6 flex flex-col gap-3">
+          <h2 className="font-display text-2xl font-bold text-harp">Why it&apos;s harder than it looks</h2>
+          <p className="text-cream/90 text-sm leading-relaxed">
+            The gap in the G is narrow. The foam compresses as you drink. The angle of the glass matters. Your sip size varies every time.
+          </p>
+          <p className="text-cream/90 text-sm leading-relaxed">
+            A clean split is genuinely rare — which is exactly why it&apos;s worth documenting when it happens.
+          </p>
+        </section>
+
+        {/* Tips */}
         <section className="flex flex-col gap-3">
-          <h2 className="font-display text-2xl font-bold text-cream">Pro tips</h2>
-          <div className="flex flex-col gap-2">
+          <h2 className="font-display text-2xl font-bold text-cream">Tips from the regulars</h2>
+          <div className="flex flex-col gap-0">
             {[
-              "The 119.5-second pour is gospel. Any barman worth their salt knows this.",
-              "A good head is 10–15mm. Dome-shaped, dense, never flat.",
-              "It should be served at 6°C. Cold, not freezing.",
-              "If it comes in under 90 seconds, send it back.",
-              "The glass should be a Guinness branded tulip. Anything else is a tourist trap.",
+              "Study the glass before you drink — know where the G sits relative to the liquid level.",
+              "Count your gulps. Find a consistent sip size and repeat it every time.",
+              "Some swear by closing their eyes to concentrate. Others think that&apos;s mad.",
+              "Keep the glass upright when you set it down. Tilting changes everything.",
+              "It started in Irish pubs, went viral, and now it&apos;s a thing everywhere Guinness is poured properly.",
             ].map((tip, i) => (
-              <div key={i} className="flex gap-3 items-start py-2 border-b border-malt/50 last:border-0">
-                <span className="text-harp text-xs mt-0.5">—</span>
+              <div key={i} className="flex gap-3 items-start py-3 border-b border-malt/50 last:border-0">
+                <span className="text-harp text-xs mt-1 shrink-0">—</span>
                 <p className="text-foam text-sm leading-relaxed">{tip}</p>
               </div>
             ))}
@@ -110,15 +113,15 @@ export default function AboutPage() {
 
         {/* CTA */}
         <div className="flex flex-col items-center gap-4 py-4 text-center">
-          <p className="text-foam text-sm">Ready to find a split near you?</p>
+          <p className="text-foam text-sm">Nailed a split? We need proof.</p>
           <Link
             href="/upload"
             className="bg-harp text-stout font-bold px-8 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity"
           >
-            Post your pint
+            Post your split
           </Link>
           <Link href="/feed" className="text-foam text-xs hover:text-cream transition-colors">
-            Or browse the feed →
+            See how others are doing →
           </Link>
         </div>
 
