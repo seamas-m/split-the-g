@@ -34,7 +34,7 @@ export default function AppHeader() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-3 z-40 flex items-center justify-between">
+    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-3 z-[70] flex items-center justify-between">
       <Link href="/feed" className="flex items-center gap-2.5 group">
         <SplitGMark size={36} />
         <span className="font-display text-xl font-bold text-cream tracking-tight group-hover:text-harp transition-colors leading-none">
