@@ -3,10 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
+import Image from "next/image";
 import PostCard from "@/components/post-card";
 import FollowButton from "@/components/follow-button";
 import { mapPost } from "@/lib/map-post";
-import { MapPin, Settings } from "lucide-react";
+import { MapPin, Settings, Pin } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -58,9 +59,13 @@ export default async function UserProfilePage({
 
   const { user, posts, totalNailed, topCity, followerCount, isFollowing } = profile;
   const isOwnProfile = currentUserId === user.id;
+  const pinnedPostId = user.pinnedPostId ?? null;
+  const pinnedPost = pinnedPostId ? posts.find((p) => p.id === pinnedPostId) ?? null : null;
+  const unpinnedPosts = pinnedPost ? posts.filter((p) => p.id !== pinnedPostId) : posts;
 
   return (
     <main className="flex-1 pb-24 w-full max-w-5xl mx-auto">
+      {/* Profile header */}
       <div className="flex flex-col items-center gap-4 px-6 py-8 border-b border-malt">
         <div className="w-20 h-20 rounded-full bg-malt flex items-center justify-center text-3xl font-bold text-harp font-display">
           {(user.username ?? user.name ?? "?")[0].toUpperCase()}
@@ -113,7 +118,7 @@ export default async function UserProfilePage({
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col gap-5">
         {posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-48 text-foam gap-4">
             <p className="italic">No pints posted yet.</p>
@@ -124,13 +129,36 @@ export default async function UserProfilePage({
             )}
           </div>
         ) : (
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-            {posts.map((post) => (
-              <div key={post.id} className="break-inside-avoid">
-                <PostCard post={post} isOwner={isOwnProfile} />
+          <>
+            {/* Pinned split */}
+            {pinnedPost && (
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-1.5 text-xs text-harp font-semibold">
+                  <Pin size={12} />
+                  Pinned split
+                </div>
+                <div className="sm:max-w-xs">
+                  <PostCard post={pinnedPost} isOwner={isOwnProfile} isPinned={true} />
+                </div>
               </div>
-            ))}
-          </div>
+            )}
+
+            {/* All pints */}
+            {unpinnedPosts.length > 0 && (
+              <div className="flex flex-col gap-3">
+                {pinnedPost && (
+                  <p className="text-xs text-foam/50 font-medium uppercase tracking-wide">All pints</p>
+                )}
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+                  {unpinnedPosts.map((post) => (
+                    <div key={post.id} className="break-inside-avoid">
+                      <PostCard post={post} isOwner={isOwnProfile} isPinned={false} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>

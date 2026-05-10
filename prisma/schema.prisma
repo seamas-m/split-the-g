@@ -17,6 +17,7 @@ model User {
   createdAt     DateTime
   updatedAt     DateTime
   username      String?   @unique
+  pinnedPostId  String?
 
   posts                  Post[]
   ratings                Rating[]

@@ -21,9 +21,10 @@ interface PostCardProps {
     totalComments: number;
   };
   isOwner?: boolean;
+  isPinned?: boolean;
 }
 
-export default function PostCard({ post, isOwner }: PostCardProps) {
+export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
   return (
     <article className="relative bg-porter rounded-2xl overflow-hidden border border-malt">
       <div className="relative aspect-[3/4] w-full">
@@ -35,7 +36,7 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
         />
         {isOwner && (
           <div className="absolute top-2.5 right-2.5">
-            <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
+            <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} isPinned={isPinned} />
           </div>
         )}
       </div>

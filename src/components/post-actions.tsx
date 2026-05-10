@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { MoreHorizontal, Camera, X, Trash2 } from "lucide-react";
+import { MoreHorizontal, Camera, X, Trash2, Pin, PinOff } from "lucide-react";
 import Image from "next/image";
 import { uploadPintPhoto } from "@/lib/cloudinary";
 
@@ -11,14 +11,17 @@ interface PostActionsProps {
   imageUrl: string;
   pubName: string | null;
   city: string | null;
+  isPinned?: boolean;
 }
 
-export default function PostActions({ postId, imageUrl, pubName, city }: PostActionsProps) {
+export default function PostActions({ postId, imageUrl, pubName, city, isPinned = false }: PostActionsProps) {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"edit" | "delete">("edit");
+  const [pinned, setPinned] = useState(isPinned);
+  const [pinLoading, setPinLoading] = useState(false);
 
   const [preview, setPreview] = useState<string>(imageUrl);
   const [newFile, setNewFile] = useState<File | null>(null);
@@ -73,6 +76,23 @@ export default function PostActions({ postId, imageUrl, pubName, city }: PostAct
       setError(err instanceof Error ? err.message : "Save failed");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handlePin() {
+    setPinLoading(true);
+    const newPinned = !pinned;
+    try {
+      const res = await fetch("/api/profile/pin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId: newPinned ? postId : null }),
+      });
+      if (!res.ok) throw new Error("Failed to pin");
+      setPinned(newPinned);
+      router.refresh();
+    } finally {
+      setPinLoading(false);
     }
   }
 
@@ -166,6 +186,16 @@ export default function PostActions({ postId, imageUrl, pubName, city }: PostAct
                     className="w-full bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-50 text-sm tracking-wide"
                   >
                     {loading ? "Saving…" : "Save changes"}
+                  </button>
+
+                  {/* Pin / Unpin */}
+                  <button
+                    type="button"
+                    onClick={handlePin}
+                    disabled={pinLoading}
+                    className="w-full flex items-center justify-center gap-2 text-sm text-foam hover:text-cream py-2 transition-colors disabled:opacity-50"
+                  >
+                    {pinned ? <><PinOff size={14} /> Unpin from profile</> : <><Pin size={14} /> Pin to profile</>}
                   </button>
 
                   {/* Delete — at the bottom, clearly destructive */}
