@@ -93,13 +93,13 @@ export default function CommentsSheet({ postId, initialCount }: CommentsSheetPro
 
       {/* Bottom sheet */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
+        <div className="fixed inset-0 z-[60] flex items-end justify-center">
           {/* Backdrop */}
           <div className="absolute inset-0 bg-stout/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
 
-          {/* Sheet */}
-          <div className="relative bg-porter border-t border-malt rounded-t-2xl w-full max-w-lg flex flex-col shadow-xl"
-               style={{ height: "75vh" }}>
+          {/* Sheet — sits above navbar (h-16 = 64px) */}
+          <div className="relative bg-porter border-t border-malt rounded-t-2xl w-full max-w-lg flex flex-col shadow-xl mb-16"
+               style={{ height: "70vh" }}>
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-malt shrink-0">
               <h2 className="font-semibold text-cream text-sm">Comments</h2>
