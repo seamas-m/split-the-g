@@ -11,8 +11,9 @@ interface Post {
   createdAt: string;
   userId: string;
   user: { username: string | null; image: string | null };
-  totalCheers: number;
-  hasCheersed: boolean;
+  nailedCount: number;
+  notQuiteCount: number;
+  userVote: "nailed" | "notquite" | null;
   totalComments: number;
   isOwner: boolean;
 }

@@ -26,19 +26,23 @@ export async function GET(req: NextRequest) {
   const page = posts.slice(0, limit);
   const nextCursor = hasMore ? page[page.length - 1].id : null;
 
-  const mapped = page.map((p) => ({
-    id: p.id,
-    imageUrl: p.imageUrl,
-    pubName: p.pubName,
-    city: p.city,
-    createdAt: p.createdAt.toISOString(),
-    userId: p.userId,
-    user: p.user,
-    totalCheers: p.ratings.length,
-    hasCheersed: currentUserId ? p.ratings.some((r) => r.userId === currentUserId) : false,
-    totalComments: p.comments.length,
-    isOwner: currentUserId === p.userId,
-  }));
+  const mapped = page.map((p) => {
+    const myRating = currentUserId ? p.ratings.find((r) => r.userId === currentUserId) : null;
+    return {
+      id: p.id,
+      imageUrl: p.imageUrl,
+      pubName: p.pubName,
+      city: p.city,
+      createdAt: p.createdAt.toISOString(),
+      userId: p.userId,
+      user: p.user,
+      nailedCount: p.ratings.filter((r) => r.score === 1).length,
+      notQuiteCount: p.ratings.filter((r) => r.score === 0).length,
+      userVote: myRating == null ? null : myRating.score === 1 ? "nailed" : "notquite",
+      totalComments: p.comments.length,
+      isOwner: currentUserId === p.userId,
+    };
+  });
 
   return NextResponse.json({ posts: mapped, nextCursor });
 }

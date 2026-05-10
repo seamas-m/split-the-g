@@ -9,6 +9,7 @@ import SearchInput from "@/components/search-input";
 import Navbar from "@/components/navbar";
 import AppHeader from "@/components/app-header";
 import Link from "next/link";
+import { mapPost } from "@/lib/map-post";
 
 async function getTrendingPubs() {
   const posts = await prisma.post.groupBy({
@@ -40,19 +41,7 @@ async function searchPosts(q: string, currentUserId: string | null) {
     },
   });
 
-  return posts.map((p) => ({
-    id: p.id,
-    imageUrl: p.imageUrl,
-    pubName: p.pubName,
-    city: p.city,
-    createdAt: p.createdAt.toISOString(),
-    userId: p.userId,
-    user: p.user,
-    totalCheers: p.ratings.length,
-    hasCheersed: currentUserId ? p.ratings.some((r) => r.userId === currentUserId) : false,
-    totalComments: p.comments.length,
-    isOwner: currentUserId === p.userId,
-  }));
+  return posts.map((p) => mapPost(p, currentUserId));
 }
 
 export default async function SearchPage({

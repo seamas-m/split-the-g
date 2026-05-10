@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 interface Notification {
   id: string;
-  type: "cheers" | "comment";
+  type: "nailed" | "comment";
   body: string | null;
   read: boolean;
   createdAt: string;
@@ -98,7 +98,7 @@ export default function NotificationsSheet() {
             <Bell size={24} className="text-malt" />
             <p className="text-cream text-sm font-medium">No activity yet</p>
             <p className="text-foam text-xs leading-relaxed">
-              When someone cheers or comments on your pint, you&apos;ll see it here.
+              When someone votes on your split or comments, you&apos;ll see it here.
             </p>
           </div>
         )}
@@ -118,8 +118,8 @@ export default function NotificationsSheet() {
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-cream leading-snug">
                   <span className="font-semibold">{actorName}</span>
-                  {n.type === "cheers"
-                    ? <> cheersed your pint{n.post.pubName ? ` at ${n.post.pubName}` : ""}</>
+                  {n.type === "nailed"
+                    ? <> said you nailed it{n.post.pubName ? ` at ${n.post.pubName}` : ""}</>
                     : <> commented on your pint{n.post.pubName ? ` at ${n.post.pubName}` : ""}</>
                   }
                 </p>

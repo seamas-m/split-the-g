@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import CheersButton from "./cheers-button";
+import SplitVote from "./split-vote";
 import PostActions from "./post-actions";
 import CommentsSheet from "./comments-sheet";
 import TimeAgo from "./time-ago";
@@ -15,10 +15,10 @@ interface PostCardProps {
     createdAt: string;
     userId: string;
     user: { username: string | null; image: string | null };
-    totalCheers: number;
-    hasCheersed: boolean;
+    nailedCount: number;
+    notQuiteCount: number;
+    userVote: "nailed" | "notquite" | null;
     totalComments: number;
-    userScore?: number;
   };
   isOwner?: boolean;
 }
@@ -26,7 +26,6 @@ interface PostCardProps {
 export default function PostCard({ post, isOwner }: PostCardProps) {
   return (
     <article className="relative bg-porter rounded-2xl overflow-hidden border border-malt">
-      {/* Photo */}
       <div className="relative aspect-[3/4] w-full">
         <Image
           src={post.imageUrl}
@@ -34,21 +33,15 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
           fill
           className="object-cover"
         />
-        {/* Edit button sits over image so it never affects card height */}
         {isOwner && (
           <div className="absolute top-2.5 right-2.5">
-            <PostActions
-              postId={post.id}
-              imageUrl={post.imageUrl}
-              pubName={post.pubName}
-              city={post.city}
-            />
+            <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} />
           </div>
         )}
       </div>
 
       <div className="p-4 flex flex-col gap-2">
-        {/* Location — always reserves the same vertical space so the grid stays aligned */}
+        {/* Location — consistent height */}
         <div className="min-h-[2.75rem] flex flex-col justify-center gap-0.5">
           {post.pubName ? (
             <span className="font-bold text-base text-cream leading-tight">{post.pubName}</span>
@@ -62,11 +55,8 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
           )}
         </div>
 
-        {/* User row */}
-        <Link
-          href={`/profile/${post.user.username}`}
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-        >
+        {/* User */}
+        <Link href={`/profile/${post.user.username}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="w-6 h-6 rounded-full bg-malt flex items-center justify-center text-xs font-bold text-harp shrink-0">
             {(post.user.username ?? "?")[0].toUpperCase()}
           </div>
@@ -77,11 +67,12 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
         </Link>
 
         {/* Actions */}
-        <div className="flex items-center gap-4 pt-1 border-t border-malt/50">
-          <CheersButton
+        <div className="flex items-center justify-between pt-1 border-t border-malt/50">
+          <SplitVote
             postId={post.id}
-            totalCheers={post.totalCheers}
-            hasCheersed={post.hasCheersed}
+            nailedCount={post.nailedCount}
+            notQuiteCount={post.notQuiteCount}
+            userVote={post.userVote}
           />
           <CommentsSheet
             postId={post.id}
