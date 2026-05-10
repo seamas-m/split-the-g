@@ -68,12 +68,29 @@ export default function PostCard({ post, isOwner }: PostCardProps) {
 
         {/* Actions */}
         <div className="flex items-center justify-between pt-1 border-t border-malt/50">
-          <SplitVote
-            postId={post.id}
-            nailedCount={post.nailedCount}
-            notQuiteCount={post.notQuiteCount}
-            userVote={post.userVote}
-          />
+          {isOwner ? (
+            <div className="flex items-center gap-2 text-xs text-foam/60">
+              {post.nailedCount > 0 && (
+                <span className="flex items-center gap-1">
+                  <span className="text-harp/70">✓</span> {post.nailedCount} nailed it
+                </span>
+              )}
+              {post.nailedCount > 0 && post.notQuiteCount > 0 && <span>·</span>}
+              {post.notQuiteCount > 0 && (
+                <span>{post.notQuiteCount} not quite</span>
+              )}
+              {post.nailedCount === 0 && post.notQuiteCount === 0 && (
+                <span className="italic">No votes yet</span>
+              )}
+            </div>
+          ) : (
+            <SplitVote
+              postId={post.id}
+              nailedCount={post.nailedCount}
+              notQuiteCount={post.notQuiteCount}
+              userVote={post.userVote}
+            />
+          )}
           <CommentsSheet
             postId={post.id}
             initialCount={post.totalComments}
