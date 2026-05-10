@@ -93,15 +93,12 @@ export default function OnboardingModal() {
 
         {/* Steps — visual quick-ref */}
         <div className="flex justify-center gap-0 px-6 py-4">
-          {[
-            { icon: "🍺", label: "Pour" },
-            { icon: "👄", label: "One sip" },
-            { icon: "🎯", label: "Land in G" },
-            { icon: "📸", label: "Post it" },
-          ].map(({ icon, label }, i) => (
+          {["Pour", "One sip", "Land in G", "Post it"].map((label, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
-              <span className="text-2xl">{icon}</span>
-              <span className="text-[10px] text-foam/70 font-medium">{label}</span>
+              <span className="w-7 h-7 rounded-full bg-malt flex items-center justify-center text-xs font-bold text-harp">
+                {i + 1}
+              </span>
+              <span className="text-[10px] text-foam/70 font-medium text-center">{label}</span>
             </div>
           ))}
         </div>
