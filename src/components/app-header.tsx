@@ -42,27 +42,17 @@ export default function AppHeader() {
         </span>
       </Link>
 
-      <div className="flex items-center gap-3">
+      {session && (
         <Link
-          href="/about"
-          className="text-foam/50 hover:text-foam transition-colors text-xs font-medium tracking-wide"
-          title="What is Splitting the G?"
+          href={`/profile/${(session.user as any).username ?? session.user.name}`}
+          className="flex flex-col items-center gap-0.5 text-foam hover:text-harp transition-colors"
         >
-          What&apos;s this?
+          <div className="w-8 h-8 rounded-full bg-malt border border-malt hover:border-harp transition-colors flex items-center justify-center text-xs font-bold text-harp">
+            {(session.user.name ?? session.user.email ?? "?")[0].toUpperCase()}
+          </div>
+          <span className="text-[10px] leading-none">Profile</span>
         </Link>
-
-        {session && (
-          <Link
-            href={`/profile/${(session.user as any).username ?? session.user.name}`}
-            className="flex flex-col items-center gap-0.5 text-foam hover:text-harp transition-colors"
-          >
-            <div className="w-8 h-8 rounded-full bg-malt border border-malt hover:border-harp transition-colors flex items-center justify-center text-xs font-bold text-harp">
-              {(session.user.name ?? session.user.email ?? "?")[0].toUpperCase()}
-            </div>
-            <span className="text-[10px] leading-none">Profile</span>
-          </Link>
-        )}
-      </div>
+      )}
     </header>
   );
 }
