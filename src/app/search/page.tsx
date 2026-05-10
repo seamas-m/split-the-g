@@ -6,12 +6,24 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import PostCard from "@/components/post-card";
 import SearchInput from "@/components/search-input";
+import SearchFilters from "@/components/search-filters";
 import Navbar from "@/components/navbar";
 import AppHeader from "@/components/app-header";
 import Link from "next/link";
 import { mapPost } from "@/lib/map-post";
 
-async function getTrendingPubs() {
+async function getTopCities(): Promise<string[]> {
+  const rows = await prisma.post.groupBy({
+    by: ["city"],
+    where: { city: { not: null } },
+    _count: { city: true },
+    orderBy: { _count: { city: "desc" } },
+    take: 8,
+  });
+  return rows.map((r) => r.city as string);
+}
+
+async function getTrendingPubs(): Promise<string[]> {
   const posts = await prisma.post.groupBy({
     by: ["pubName"],
     where: { pubName: { not: null } },
@@ -22,16 +34,29 @@ async function getTrendingPubs() {
   return posts.map((p) => p.pubName as string);
 }
 
-async function searchPosts(q: string, currentUserId: string | null) {
-  if (!q.trim()) return [];
+async function searchPosts(q: string, city: string, currentUserId: string | null) {
+  const hasQuery = q.trim().length > 0;
+  const hasCity = city.trim().length > 0;
+
+  if (!hasQuery && !hasCity) return [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const where: Record<string, any> = {};
+
+  if (hasCity) {
+    where.city = { contains: city.trim(), mode: "insensitive" };
+  }
+
+  if (hasQuery) {
+    where.OR = [
+      { pubName: { contains: q.trim(), mode: "insensitive" } },
+      { city: { contains: q.trim(), mode: "insensitive" } },
+      { user: { username: { contains: q.trim(), mode: "insensitive" } } },
+    ];
+  }
 
   const posts = await prisma.post.findMany({
-    where: {
-      OR: [
-        { pubName: { contains: q, mode: "insensitive" } },
-        { city: { contains: q, mode: "insensitive" } },
-      ],
-    },
+    where,
     orderBy: { createdAt: "desc" },
     take: 50,
     include: {
@@ -47,15 +72,18 @@ async function searchPosts(q: string, currentUserId: string | null) {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; city?: string }>;
 }) {
-  const { q = "" } = await searchParams;
+  const { q = "", city = "" } = await searchParams;
   const session = await auth.api.getSession({ headers: await headers() });
   const currentUserId = session?.user?.id ?? null;
 
-  const [posts, trendingPubs] = await Promise.all([
-    searchPosts(q, currentUserId),
-    q.trim() === "" ? getTrendingPubs() : Promise.resolve([]),
+  const hasFilter = q.trim() !== "" || city.trim() !== "";
+
+  const [posts, topCities, trendingPubs] = await Promise.all([
+    hasFilter ? searchPosts(q, city, currentUserId) : Promise.resolve([]),
+    getTopCities(),
+    !hasFilter ? getTrendingPubs() : Promise.resolve([]),
   ]);
 
   return (
@@ -63,14 +91,17 @@ export default async function SearchPage({
       <AppHeader />
 
       <main className="flex-1 pb-24 w-full max-w-5xl mx-auto">
-        <div className="px-4 pt-4 pb-2">
+        <div className="px-4 pt-4 pb-3 flex flex-col gap-3">
           <Suspense>
             <SearchInput />
           </Suspense>
+          <Suspense>
+            <SearchFilters topCities={topCities} activeCity={city} />
+          </Suspense>
         </div>
 
-        {q.trim() === "" ? (
-          <div className="px-4 pt-4 flex flex-col gap-4">
+        {!hasFilter ? (
+          <div className="px-4 pt-2 flex flex-col gap-4">
             {trendingPubs.length > 0 && (
               <>
                 <p className="text-xs text-foam/60 uppercase tracking-widest">Trending pubs</p>
@@ -93,7 +124,11 @@ export default async function SearchPage({
           </div>
         ) : posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-48 text-foam gap-2">
-            <p className="italic text-sm">No pints found for &ldquo;{q}&rdquo;</p>
+            <p className="italic text-sm">
+              No pints found
+              {q && <> for &ldquo;{q}&rdquo;</>}
+              {city && <> in {city}</>}
+            </p>
           </div>
         ) : (
           <div className="p-4 columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
