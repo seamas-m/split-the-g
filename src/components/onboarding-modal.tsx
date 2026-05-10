@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { X } from "lucide-react";
 
-const STORAGE_KEY = "splitg_onboarded";
+const SEEN_KEY = "splitg_onboarded";
 
 function SplitGMark({ size = 64 }: { size?: number }) {
   return (
@@ -39,12 +39,16 @@ export default function OnboardingModal() {
 
   useEffect(() => {
     setMounted(true);
-    const seen = localStorage.getItem(STORAGE_KEY);
-    if (!seen) setShow(true);
+    const seen = localStorage.getItem(SEEN_KEY);
+    if (!seen) {
+      // Small delay so the feed renders first — feels less jarring
+      const t = setTimeout(() => setShow(true), 600);
+      return () => clearTimeout(t);
+    }
   }, []);
 
   function dismiss() {
-    localStorage.setItem(STORAGE_KEY, "1");
+    localStorage.setItem(SEEN_KEY, "1");
     setShow(false);
   }
 
@@ -52,11 +56,8 @@ export default function OnboardingModal() {
 
   const modal = (
     <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-stout/80 backdrop-blur-sm"
-        onClick={dismiss}
-      />
+      {/* Non-clickable backdrop — user must use the button or X to dismiss */}
+      <div className="absolute inset-0 bg-stout/80 backdrop-blur-sm" />
 
       {/* Sheet */}
       <div className="relative z-10 w-full sm:max-w-sm bg-porter border border-malt rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">

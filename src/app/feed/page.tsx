@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import AppHeader from "@/components/app-header";
 import Navbar from "@/components/navbar";
 import FeedTabs from "@/components/feed-tabs";
+import OnboardingModal from "@/components/onboarding-modal";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -75,6 +76,7 @@ export default async function FeedPage() {
         />
       </main>
       <Navbar />
+      <OnboardingModal />
     </>
   );
 }
