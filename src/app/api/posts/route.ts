@@ -69,17 +69,12 @@ export async function POST(req: NextRequest) {
   const { imageUrl, pubName, city } = await req.json();
   if (!imageUrl) return NextResponse.json({ error: "imageUrl required" }, { status: 400 });
 
-  // Create post first
-  const post = await prisma.post.create({
-    data: { userId: session.user.id, imageUrl, pubName, city },
-  });
+  // Score the split first, then create the post with the score included
+  const aiScore = await scoreSplit(imageUrl);
 
-  // Score the split with AI — non-blocking, updates post in background
-  scoreSplit(imageUrl).then(async (aiScore) => {
-    if (aiScore !== null) {
-      await prisma.post.update({ where: { id: post.id }, data: { aiScore } });
-    }
-  }).catch(() => {/* silently fail — score can be null */});
+  const post = await prisma.post.create({
+    data: { userId: session.user.id, imageUrl, pubName, city, aiScore },
+  });
 
   return NextResponse.json(post, { status: 201 });
 }
