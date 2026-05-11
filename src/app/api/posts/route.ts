@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { scoreSplit } from "@/lib/score-split";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -46,6 +47,7 @@ export async function GET(req: NextRequest) {
       imageUrl: p.imageUrl,
       pubName: p.pubName,
       city: p.city,
+      aiScore: p.aiScore,
       createdAt: p.createdAt.toISOString(),
       userId: p.userId,
       user: p.user,
@@ -67,9 +69,17 @@ export async function POST(req: NextRequest) {
   const { imageUrl, pubName, city } = await req.json();
   if (!imageUrl) return NextResponse.json({ error: "imageUrl required" }, { status: 400 });
 
+  // Create post first
   const post = await prisma.post.create({
     data: { userId: session.user.id, imageUrl, pubName, city },
   });
+
+  // Score the split with AI — non-blocking, updates post in background
+  scoreSplit(imageUrl).then(async (aiScore) => {
+    if (aiScore !== null) {
+      await prisma.post.update({ where: { id: post.id }, data: { aiScore } });
+    }
+  }).catch(() => {/* silently fail — score can be null */});
 
   return NextResponse.json(post, { status: 201 });
 }

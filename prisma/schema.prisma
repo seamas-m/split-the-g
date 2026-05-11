@@ -75,6 +75,7 @@ model Post {
   imageUrl  String
   pubName   String?
   city      String?
+  aiScore   Float?
   createdAt DateTime @default(now())
 
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)

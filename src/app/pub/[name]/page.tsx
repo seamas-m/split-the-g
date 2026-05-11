@@ -34,9 +34,9 @@ async function getPubData(pubName: string, currentUserId: string | null) {
   const totalNailed = mapped.reduce((s, p) => s + p.nailedCount, 0);
   const city = posts[0].city ?? null;
 
-  // Bar Wall — post with most nailed-it votes
-  const barWall = [...mapped].sort((a, b) => b.nailedCount - a.nailedCount)[0];
-  const rest = mapped.filter((p) => p.id !== barWall.id);
+  // House Record — post with most nailed-it votes
+  const houseRecord = [...mapped].sort((a, b) => b.nailedCount - a.nailedCount)[0];
+  const rest = mapped.filter((p) => p.id !== houseRecord.id);
 
   // Top splitter at this pub
   const userNailed: Record<string, { username: string | null; count: number }> = {};
@@ -47,7 +47,7 @@ async function getPubData(pubName: string, currentUserId: string | null) {
   }
   const topSplitter = Object.values(userNailed).sort((a, b) => b.count - a.count)[0] ?? null;
 
-  return { pubName: posts[0].pubName!, city, mapped, barWall, rest, totalNailed, topSplitter };
+  return { pubName: posts[0].pubName!, city, mapped, houseRecord, rest, totalNailed, topSplitter };
 }
 
 export default async function PubPage({
@@ -64,7 +64,7 @@ export default async function PubPage({
   const data = await getPubData(pubName, currentUserId);
   if (!data) notFound();
 
-  const { city, mapped, barWall, rest, totalNailed, topSplitter } = data;
+  const { city, mapped, houseRecord, rest, totalNailed, topSplitter } = data;
 
   return (
     <>
@@ -112,59 +112,59 @@ export default async function PubPage({
         </div>
 
         <div className="p-4 flex flex-col gap-6">
-          {/* Bar Wall */}
-          {barWall.nailedCount > 0 && (
+          {/* House Record */}
+          {houseRecord.nailedCount > 0 && (
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1.5 text-xs text-harp font-semibold">
                 <Pin size={12} />
-                Bar Wall — best split here
+                House Record — best split here
               </div>
               <div className="bg-porter border border-harp/30 rounded-2xl overflow-hidden">
                 <div className="relative aspect-[3/4] sm:aspect-[4/3] w-full">
                   <Image
-                    src={barWall.imageUrl}
+                    src={houseRecord.imageUrl}
                     alt={`Best split at ${data.pubName}`}
                     fill
                     className="object-cover"
                   />
                   {/* Score badge */}
                   <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-stout/80 backdrop-blur-sm rounded-full px-3 py-1.5">
-                    <span className="text-harp text-xs font-bold">✓ {barWall.nailedCount} nailed it</span>
+                    <span className="text-harp text-xs font-bold">✓ {houseRecord.nailedCount} nailed it</span>
                   </div>
                 </div>
                 <div className="p-4 flex flex-col gap-3">
                   <div className="flex items-center justify-between">
-                    <Link href={`/profile/${barWall.user.username}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <Link href={`/profile/${houseRecord.user.username}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                       <div className="w-7 h-7 rounded-full bg-malt flex items-center justify-center text-xs font-bold text-harp">
-                        {(barWall.user.username ?? "?")[0].toUpperCase()}
+                        {(houseRecord.user.username ?? "?")[0].toUpperCase()}
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-cream">@{barWall.user.username ?? "anon"}</span>
-                        <TimeAgo date={barWall.createdAt} />
+                        <span className="text-sm font-semibold text-cream">@{houseRecord.user.username ?? "anon"}</span>
+                        <TimeAgo date={houseRecord.createdAt} />
                       </div>
                     </Link>
                   </div>
                   <div className="flex items-center justify-between pt-2 border-t border-malt/50">
-                    {barWall.isOwner ? (
+                    {houseRecord.isOwner ? (
                       <div className="flex items-center gap-2 text-xs text-foam/60">
-                        <span className="text-harp/70">✓</span> {barWall.nailedCount} nailed it
-                        {barWall.notQuiteCount > 0 && <> · {barWall.notQuiteCount} not quite</>}
+                        <span className="text-harp/70">✓</span> {houseRecord.nailedCount} nailed it
+                        {houseRecord.notQuiteCount > 0 && <> · {houseRecord.notQuiteCount} not quite</>}
                       </div>
                     ) : (
                       <SplitVote
-                        postId={barWall.id}
-                        nailedCount={barWall.nailedCount}
-                        notQuiteCount={barWall.notQuiteCount}
-                        userVote={barWall.userVote}
+                        postId={houseRecord.id}
+                        nailedCount={houseRecord.nailedCount}
+                        notQuiteCount={houseRecord.notQuiteCount}
+                        userVote={houseRecord.userVote}
                       />
                     )}
                     <CommentsSheet
-                      postId={barWall.id}
-                      initialCount={barWall.totalComments}
-                      imageUrl={barWall.imageUrl}
+                      postId={houseRecord.id}
+                      initialCount={houseRecord.totalComments}
+                      imageUrl={houseRecord.imageUrl}
                       pubName={data.pubName}
                       city={city}
-                      username={barWall.user.username}
+                      username={houseRecord.user.username}
                     />
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export default async function PubPage({
           {/* All splits */}
           {rest.length > 0 && (
             <div className="flex flex-col gap-3">
-              {barWall.nailedCount > 0 && (
+              {houseRecord.nailedCount > 0 && (
                 <p className="text-xs text-foam/50 font-medium uppercase tracking-wide">All splits</p>
               )}
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
@@ -188,8 +188,8 @@ export default async function PubPage({
             </div>
           )}
 
-          {/* If bar wall has no votes, just show grid normally */}
-          {barWall.nailedCount === 0 && (
+          {/* If house record has no votes, just show grid normally */}
+          {houseRecord.nailedCount === 0 && (
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
               {mapped.map((post) => (
                 <div key={post.id} className="break-inside-avoid">

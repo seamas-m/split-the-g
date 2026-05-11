@@ -5,6 +5,7 @@ type RawPost = {
   imageUrl: string;
   pubName: string | null;
   city: string | null;
+  aiScore: number | null;
   createdAt: Date;
   userId: string;
   user: { username: string | null; image: string | null };
@@ -22,6 +23,7 @@ export function mapPost(p: RawPost, currentUserId: string | null) {
     createdAt: p.createdAt.toISOString(),
     userId: p.userId,
     user: p.user,
+    aiScore: p.aiScore,
     nailedCount: p.ratings.filter((r) => r.score === 1).length,
     notQuiteCount: p.ratings.filter((r) => r.score === 0).length,
     userVote: myRating == null ? null : myRating.score === 1 ? ("nailed" as const) : ("notquite" as const),

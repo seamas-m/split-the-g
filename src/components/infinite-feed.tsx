@@ -8,6 +8,7 @@ interface Post {
   imageUrl: string;
   pubName: string | null;
   city: string | null;
+  aiScore: number | null;
   createdAt: string;
   userId: string;
   user: { username: string | null; image: string | null };

@@ -16,6 +16,7 @@ interface PostCardProps {
     imageUrl: string;
     pubName: string | null;
     city: string | null;
+    aiScore: number | null;
     createdAt: string;
     userId: string;
     user: { username: string | null; image: string | null };
@@ -50,6 +51,12 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
               onClick={(e) => e.stopPropagation()}
             >
               <PostActions postId={post.id} imageUrl={post.imageUrl} pubName={post.pubName} city={post.city} isPinned={isPinned} />
+            </div>
+          )}
+          {post.aiScore !== null && post.aiScore !== undefined && (
+            <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-stout/80 backdrop-blur-sm rounded-full px-2.5 py-1 pointer-events-none">
+              <span className="text-harp text-xs font-bold">{post.aiScore.toFixed(1)}</span>
+              <span className="text-foam/60 text-xs">/10</span>
             </div>
           )}
         </div>
