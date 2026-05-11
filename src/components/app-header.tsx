@@ -43,11 +43,9 @@ export default function AppHeader() {
       </Link>
 
       <div className="flex items-center gap-4">
-        {!session && (
-          <Link href="/about" className="text-xs text-foam/60 hover:text-foam transition-colors hidden sm:block">
-            What is this?
-          </Link>
-        )}
+        <Link href="/about" className="text-xs text-foam/60 hover:text-foam transition-colors hidden sm:block">
+          What is this?
+        </Link>
         {session && (
         <div className="flex items-center gap-4">
           <NotificationsSheet />

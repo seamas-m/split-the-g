@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { data: session, isPending } = useSession();
@@ -152,6 +153,14 @@ export default function ProfilePage() {
           Sign out
         </button>
       </section>
+
+      {/* About */}
+      <Link
+        href="/about"
+        className="text-center text-xs text-foam/40 hover:text-foam/70 transition-colors py-2"
+      >
+        What is Splitting the G? →
+      </Link>
     </main>
   );
 }
