@@ -9,6 +9,7 @@ import CommentsSheet from "./comments-sheet";
 import ImageLightbox from "./image-lightbox";
 import TimeAgo from "./time-ago";
 import { MapPin } from "lucide-react";
+import { scoreLabel } from "@/lib/utils";
 
 interface PostCardProps {
   post: {
@@ -55,8 +56,7 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
           )}
           {post.aiScore !== null && post.aiScore !== undefined && (
             <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-stout/80 backdrop-blur-sm rounded-full px-2.5 py-1 pointer-events-none">
-              <span className="text-harp text-xs font-bold">{post.aiScore.toFixed(1)}</span>
-              <span className="text-foam/60 text-xs">/10</span>
+              <span className="text-harp text-xs font-bold">{scoreLabel(post.aiScore)}</span>
             </div>
           )}
         </div>

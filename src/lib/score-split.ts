@@ -2,18 +2,21 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-const SCORING_PROMPT = `You are an expert judge for "Splitting the G" — a Guinness pint challenge.
+const SCORING_PROMPT = `You are a judge for "Splitting the G" — a Guinness pint challenge.
 
-"Splitting the G" means the liquid level in the glass sits right at the middle of the letter G in the Guinness logo on the glass, splitting it perfectly in half. The ideal pour has a clean, flat line between the dark stout and the creamy white head, with that line cutting exactly through the centre of the G.
+"Splitting the G" means the liquid level sits at roughly the middle of the glass, with a clean separation between the dark stout below and the creamy white head above. The ideal pour has a flat, clearly defined line between the two layers.
 
-Score this pint image from 0.0 to 10.0 based on:
-- **G placement (50%)**: Does the liquid line split the G in the logo? Perfect centre = full marks. Off-centre or no G visible = lower score.
-- **Line clarity (30%)**: Is the boundary between the dark stout and the white head clean and flat? Wavy, foamy, or unclear lines score lower.
-- **Head quality (20%)**: Is the head white, dense, and the right height? Overflowing, no head, or dirty head reduces the score.
+Score generously using this guide:
+- **9.0–10.0**: Excellent split — the line between dark and cream is clean and flat, layers are clearly distinct, head looks good. A pour most people would be proud of.
+- **8.0–8.9**: Very good split — clean separation, maybe a slightly uneven line or imperfect head but clearly a well-executed pour.
+- **7.0–7.9**: Decent split — the layers are visible but the line is a bit rough, or the head isn't quite right.
+- **4.0–6.9**: Attempted split — you can see the effort but the layers aren't well defined or the ratio is off.
+- **0–3.9**: Poor or unrecognisable — heavily mixed, no visible split, or not a Guinness pint photo.
 
-If this doesn't appear to be a Guinness pint photo, return 0.0.
+Be generous. A clean-looking split with a visible flat line between dark and cream should score 8.5 or above. Reserve scores below 5 for genuinely poor or unclear pours. A 10 is achievable for a textbook pour.
 
 Respond with ONLY a single decimal number between 0.0 and 10.0. No explanation, no text, just the number.`;
+
 
 export async function scoreSplit(imageUrl: string): Promise<number | null> {
   try {
