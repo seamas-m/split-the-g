@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, PlusCircle, Info } from "lucide-react";
+import { Home, Search, PlusCircle, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/feed", label: "Feed", icon: Home },
   { href: "/search", label: "Search", icon: Search },
   { href: "/upload", label: "Post", icon: PlusCircle },
-  { href: "/about", label: "About", icon: Info },
+  { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
 ];
 
 export default function Navbar() {
