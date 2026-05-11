@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "prisma generate && next dev",
-    "build": "prisma migrate deploy --skip-advisory-lock && prisma generate && next build",
+    "build": "prisma generate && next build",
+    "migrate": "tsx scripts/migrate.ts",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint"
