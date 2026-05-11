@@ -109,7 +109,7 @@ export default async function SearchPage({
                   {trendingPubs.map((pub) => (
                     <Link
                       key={pub}
-                      href={`/search?q=${encodeURIComponent(pub)}`}
+                      href={`/pub/${encodeURIComponent(pub)}`}
                       className="px-4 py-2 rounded-full bg-malt text-cream text-sm hover:bg-harp hover:text-stout transition-colors font-medium"
                     >
                       {pub}

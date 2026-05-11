@@ -58,14 +58,24 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
           {/* Location — consistent height */}
           <div className="min-h-[2.75rem] flex flex-col justify-center gap-0.5">
             {post.pubName ? (
-              <span className="font-bold text-base text-cream leading-tight">{post.pubName}</span>
+              <Link
+                href={`/pub/${encodeURIComponent(post.pubName)}`}
+                className="font-bold text-base text-cream leading-tight hover:text-harp transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {post.pubName}
+              </Link>
             ) : (
               <span className="text-sm text-foam/30 italic leading-tight">No location</span>
             )}
             {post.city && (
-              <span className="flex items-center gap-1 text-xs text-foam">
+              <Link
+                href={`/search?city=${encodeURIComponent(post.city)}`}
+                className="flex items-center gap-1 text-xs text-foam hover:text-harp transition-colors w-fit"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <MapPin size={11} /> {post.city}
-              </span>
+              </Link>
             )}
           </div>
 

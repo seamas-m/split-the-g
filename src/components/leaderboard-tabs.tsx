@@ -54,8 +54,11 @@ function PostRow({ entry, rank }: { entry: PostEntry; rank: number }) {
     )}>
       <RankBadge rank={rank} />
 
-      {/* Thumbnail */}
-      <Link href={`/feed`} className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-malt/50">
+      {/* Thumbnail — links to pub page if available */}
+      <Link
+        href={entry.pubName ? `/pub/${encodeURIComponent(entry.pubName)}` : `/feed`}
+        className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-malt/50"
+      >
         <Image src={entry.imageUrl} alt="Split" fill className="object-cover" />
       </Link>
 
@@ -63,14 +66,22 @@ function PostRow({ entry, rank }: { entry: PostEntry; rank: number }) {
       <div className="flex-1 min-w-0">
         <div className="flex flex-col gap-0.5">
           {entry.pubName ? (
-            <span className="text-sm font-semibold text-cream truncate leading-tight">{entry.pubName}</span>
+            <Link
+              href={`/pub/${encodeURIComponent(entry.pubName)}`}
+              className="text-sm font-semibold text-cream truncate leading-tight hover:text-harp transition-colors"
+            >
+              {entry.pubName}
+            </Link>
           ) : (
             <span className="text-sm text-foam/40 italic leading-tight">No location</span>
           )}
           {entry.city && (
-            <span className="flex items-center gap-1 text-xs text-foam/60">
+            <Link
+              href={`/search?city=${encodeURIComponent(entry.city)}`}
+              className="flex items-center gap-1 text-xs text-foam/60 hover:text-harp transition-colors w-fit"
+            >
               <MapPin size={10} /> {entry.city}
-            </span>
+            </Link>
           )}
           <Link
             href={`/profile/${entry.username}`}
