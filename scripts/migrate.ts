@@ -1,19 +1,27 @@
 /**
- * Custom migration runner using Neon HTTP driver.
+ * Custom migration runner for Neon.
+ * Uses PrismaClient.$executeRawUnsafe so DDL statements actually execute.
  * Avoids pg_advisory_lock issues that break prisma migrate deploy on Neon.
  *
- * Usage: npx tsx scripts/migrate.ts
+ * Usage: npm run migrate
  */
-import { neon } from "@neondatabase/serverless";
+import "dotenv/config";
 import fs from "fs";
 import path from "path";
-import "dotenv/config";
+import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaNeon } from "@prisma/adapter-neon";
 
-const sql = neon(process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL!);
+function createClient() {
+  const connectionString = process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL!;
+  const adapter = new PrismaNeon({ connectionString });
+  return new PrismaClient({ adapter });
+}
 
 async function run() {
+  const prisma = createClient();
+
   // Ensure migrations table exists
-  await sql`
+  await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS "_prisma_migrations" (
       id VARCHAR(36) PRIMARY KEY,
       checksum VARCHAR(64) NOT NULL,
@@ -24,7 +32,7 @@ async function run() {
       started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       applied_steps_count INTEGER NOT NULL DEFAULT 0
     )
-  `;
+  `);
 
   const migrationsDir = path.join(process.cwd(), "prisma/migrations");
   const folders = fs
@@ -37,8 +45,9 @@ async function run() {
     if (!fs.existsSync(sqlFile)) continue;
 
     // Check if already applied
-    const existing = await sql`
-      SELECT id FROM "_prisma_migrations" WHERE migration_name = ${folder} AND finished_at IS NOT NULL
+    const existing = await prisma.$queryRaw<{ id: string }[]>`
+      SELECT id FROM "_prisma_migrations"
+      WHERE migration_name = ${folder} AND finished_at IS NOT NULL
     `;
     if (existing.length > 0) {
       console.log(`  ✓ ${folder} (already applied)`);
@@ -53,42 +62,42 @@ async function run() {
 
     console.log(`  ↑ Applying ${folder}…`);
     const id = crypto.randomUUID();
-    const checksum = folder; // simplified — not a real checksum but sufficient
+    const checksum = folder;
 
-    await sql`
+    await prisma.$executeRawUnsafe(`
       INSERT INTO "_prisma_migrations" (id, checksum, migration_name, started_at, applied_steps_count)
-      VALUES (${id}, ${checksum}, ${folder}, now(), 0)
+      VALUES ('${id}', '${checksum}', '${folder}', now(), 0)
       ON CONFLICT (id) DO NOTHING
-    `;
+    `);
 
     try {
-      // Run each statement separately
       const statements = migrationSql
         .split(";")
         .map((s) => s.trim())
         .filter(Boolean);
 
       for (const stmt of statements) {
-        await sql.unsafe(stmt);
+        await prisma.$executeRawUnsafe(stmt);
       }
 
-      await sql`
+      await prisma.$executeRawUnsafe(`
         UPDATE "_prisma_migrations"
         SET finished_at = now(), applied_steps_count = 1
-        WHERE id = ${id}
-      `;
+        WHERE id = '${id}'
+      `);
       console.log(`  ✓ ${folder}`);
     } catch (err) {
-      await sql`
+      await prisma.$executeRawUnsafe(`
         UPDATE "_prisma_migrations"
-        SET logs = ${String(err)}, rolled_back_at = now()
-        WHERE id = ${id}
-      `;
+        SET logs = '${String(err).replace(/'/g, "''")}', rolled_back_at = now()
+        WHERE id = '${id}'
+      `);
       console.error(`  ✗ ${folder}:`, err);
       process.exit(1);
     }
   }
 
+  await prisma.$disconnect();
   console.log("\nAll migrations applied.");
 }
 
