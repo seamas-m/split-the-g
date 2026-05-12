@@ -136,8 +136,7 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
 
       {lightboxOpen && (
         <ImageLightbox
-          src={post.imageUrl}
-          alt={`Pint at ${post.pubName ?? "unknown pub"}`}
+          images={[{ src: post.imageUrl, alt: `Pint at ${post.pubName ?? "unknown pub"}` }]}
           onClose={() => setLightboxOpen(false)}
         />
       )}
