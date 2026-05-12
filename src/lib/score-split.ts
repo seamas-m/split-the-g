@@ -4,17 +4,21 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const SCORING_PROMPT = `You are a judge for "Splitting the G" — a Guinness pint challenge.
 
-"Splitting the G" means the liquid level sits at the middle of the glass, creating a clean horizontal line between the dark stout below and the white creamy head above.
+The challenge is called "Splitting the G" because the liquid level should sit right at the G in the GUINNESS logo on the glass, splitting the letter in half. The G is roughly in the middle of the glass. A good split means the dark stout fills approximately 75–80% of the glass and the creamy white head sits on top taking up the remaining 20–25% — contained neatly within the rim.
 
-Classify the pint into exactly one of these four tiers based on what you can see:
+Two things matter equally:
+1. **Position** — the line between dark and cream should be near the middle of the glass (at the G). A huge overflowing head, or a line that is too high or too low, is a bad split regardless of how clean the line looks.
+2. **Line clarity** — the boundary between dark stout and white head should be flat and clean, not mixed or foamy throughout.
 
-**SPOT_ON** — A genuinely well-executed split. The line between dark stout and white head is clearly visible, flat, and clean. The two layers are distinctly separate. Head is white and intact. This is a pour someone would be proud of.
+Classify the pint into exactly one of these four tiers:
 
-**GRAND** — A decent attempt. There is visible separation between the dark and light layers but the line is slightly uneven, wavy, or the head is a bit off. Still clearly a split, just not perfect.
+**SPOT_ON** — The line is close to mid-glass (near the G), the dark stout fills roughly 75–80% of the glass, the head is white and contained within the rim, and the line is clean. Both position AND clarity are good.
 
-**NOT_THE_WORST** — The layers are mixed or hard to distinguish. There may be some separation but it's unclear, the ratio is significantly off, or the head is missing/dirty.
+**GRAND** — Decent attempt. Either the position is slightly off (a bit too high or low) OR the line is a bit uneven — but not both badly wrong at the same time.
 
-**KEEP_AT_IT** — Heavily mixed pint with no clear split visible, or this doesn't appear to be a Guinness pint photo at all.
+**NOT_THE_WORST** — Noticeably off. The head is overflowing or takes up way more than a quarter of the glass, or the line is far from mid-glass, or the layers are significantly mixed.
+
+**KEEP_AT_IT** — Very poor split, heavily mixed, head massively overflowing, or not a Guinness pint photo.
 
 Respond with ONLY one of these four words exactly as written: SPOT_ON, GRAND, NOT_THE_WORST, KEEP_AT_IT. No other text.`;
 
