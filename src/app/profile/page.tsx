@@ -97,7 +97,7 @@ export default function ProfilePage() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="bg-stout border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
+            className="bg-malt/30 border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
           />
           {usernameError && <p className="text-red-400 text-xs">{usernameError}</p>}
           {usernameSuccess && <p className="text-green-400 text-xs">Username updated.</p>}
@@ -121,7 +121,7 @@ export default function ProfilePage() {
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             required
-            className="bg-stout border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
+            className="bg-malt/30 border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
           />
           <input
             type="password"
@@ -130,7 +130,7 @@ export default function ProfilePage() {
             onChange={(e) => setNewPassword(e.target.value)}
             required
             minLength={8}
-            className="bg-stout border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
+            className="bg-malt/30 border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
           />
           {passwordError && <p className="text-red-400 text-xs">{passwordError}</p>}
           {passwordSuccess && <p className="text-green-400 text-xs">Password changed.</p>}

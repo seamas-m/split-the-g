@@ -55,8 +55,8 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
             </div>
           )}
           {post.aiScore !== null && post.aiScore !== undefined && (
-            <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-stout/80 backdrop-blur-sm rounded-full px-2.5 py-1 pointer-events-none">
-              <span className="text-harp text-xs font-bold">{scoreLabel(post.aiScore)}</span>
+            <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-ink/75 backdrop-blur-sm rounded-full px-2.5 py-1 pointer-events-none">
+              <span className="text-harp text-xs font-bold drop-shadow">{scoreLabel(post.aiScore)}</span>
             </div>
           )}
         </div>

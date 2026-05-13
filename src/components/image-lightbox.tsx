@@ -140,7 +140,7 @@ export default function ImageLightbox({
       {/* Close button */}
       <button
         onClick={(e) => { e.stopPropagation(); handleClose(); }}
-        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-porter/80 text-cream hover:bg-porter transition-colors"
+        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-ink/70 text-stout hover:bg-ink transition-colors"
         aria-label="Close"
         style={{ opacity: visible ? 1 : 0, transition: "opacity 240ms ease" }}
       >
@@ -151,7 +151,7 @@ export default function ImageLightbox({
       {canNav && index > 0 && (
         <button
           onClick={(e) => { e.stopPropagation(); setIndex((i) => i - 1); }}
-          className="absolute left-3 z-10 p-2 rounded-full bg-porter/80 text-cream hover:bg-porter transition-colors"
+          className="absolute left-3 z-10 p-2 rounded-full bg-ink/70 text-stout hover:bg-ink transition-colors"
           style={{ opacity: visible ? 1 : 0, transition: "opacity 240ms ease" }}
           aria-label="Previous"
         >
@@ -163,7 +163,7 @@ export default function ImageLightbox({
       {canNav && index < images.length - 1 && (
         <button
           onClick={(e) => { e.stopPropagation(); setIndex((i) => i + 1); }}
-          className="absolute right-3 z-10 p-2 rounded-full bg-porter/80 text-cream hover:bg-porter transition-colors"
+          className="absolute right-3 z-10 p-2 rounded-full bg-ink/70 text-stout hover:bg-ink transition-colors"
           style={{ opacity: visible ? 1 : 0, transition: "opacity 240ms ease" }}
           aria-label="Next"
         >

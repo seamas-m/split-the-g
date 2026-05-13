@@ -57,7 +57,7 @@ export default function OnboardingModal() {
   const modal = (
     <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center">
       {/* Non-clickable backdrop — user must use the button or X to dismiss */}
-      <div className="absolute inset-0 bg-stout/80 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-ink/80 backdrop-blur-sm" />
 
       {/* Sheet */}
       <div className="relative z-10 w-full sm:max-w-sm bg-porter border border-malt rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">

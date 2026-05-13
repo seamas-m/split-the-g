@@ -128,7 +128,7 @@ export default async function PubPage({
                     className="object-cover"
                   />
                   {/* Score badge */}
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-stout/80 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-ink/75 backdrop-blur-sm rounded-full px-3 py-1.5">
                     <span className="text-harp text-xs font-bold">✓ {houseRecord.nailedCount} nailed it</span>
                   </div>
                 </div>

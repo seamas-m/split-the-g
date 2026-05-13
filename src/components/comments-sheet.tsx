@@ -100,7 +100,7 @@ export default function CommentsSheet({ postId, initialCount, imageUrl, pubName,
       {open && (
         <div className="fixed inset-x-0 bottom-0 top-[60px] z-[60] flex items-end justify-center">
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-stout/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="absolute inset-0 bg-ink/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
 
           {/* Sheet — sits above navbar (h-16 = 64px) */}
           <div className="relative bg-porter border-t border-malt rounded-t-2xl w-full max-w-lg flex flex-col shadow-xl mb-16"
@@ -114,7 +114,7 @@ export default function CommentsSheet({ postId, initialCount, imageUrl, pubName,
             </div>
 
             {/* Post context */}
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-malt shrink-0 bg-stout/30">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-malt shrink-0 bg-malt/20">
               <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0">
                 <Image src={imageUrl} alt="Post" fill className="object-cover" />
               </div>

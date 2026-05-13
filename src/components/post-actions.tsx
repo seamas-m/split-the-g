@@ -111,7 +111,7 @@ export default function PostActions({ postId, imageUrl, pubName, city, isPinned 
     <>
       <button
         onClick={openModal}
-        className="p-1.5 rounded-lg bg-stout/60 backdrop-blur-sm text-cream hover:bg-stout/80 transition-colors"
+        className="p-1.5 rounded-lg bg-ink/60 backdrop-blur-sm text-stout hover:bg-ink/80 transition-colors"
         aria-label="Edit post"
       >
         <MoreHorizontal size={16} />
@@ -121,7 +121,7 @@ export default function PostActions({ postId, imageUrl, pubName, city, isPinned 
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-stout/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-ink/80 backdrop-blur-sm"
             onClick={closeModal}
           />
 
@@ -141,7 +141,7 @@ export default function PostActions({ postId, imageUrl, pubName, city, isPinned 
                   <button
                     type="button"
                     onClick={() => fileRef.current?.click()}
-                    className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-stout/50 opacity-0 hover:opacity-100 active:opacity-100 transition-opacity rounded-t-2xl"
+                    className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-ink/50 opacity-0 hover:opacity-100 active:opacity-100 transition-opacity rounded-t-2xl"
                   >
                     <Camera size={32} className="text-cream" />
                     <span className="text-cream text-sm font-medium">Change photo</span>
@@ -149,7 +149,7 @@ export default function PostActions({ postId, imageUrl, pubName, city, isPinned 
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="absolute top-3 right-3 bg-stout/60 rounded-full p-1.5 text-cream hover:bg-stout transition-colors"
+                    className="absolute top-3 right-3 bg-ink/60 rounded-full p-1.5 text-stout hover:bg-ink transition-colors"
                   >
                     <X size={16} />
                   </button>
@@ -170,14 +170,14 @@ export default function PostActions({ postId, imageUrl, pubName, city, isPinned 
                     placeholder="Pub name"
                     value={editPub}
                     onChange={(e) => setEditPub(e.target.value)}
-                    className="bg-stout border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
+                    className="bg-malt/30 border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
                   />
                   <input
                     type="text"
                     placeholder="City"
                     value={editCity}
                     onChange={(e) => setEditCity(e.target.value)}
-                    className="bg-stout border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
+                    className="bg-malt/30 border border-malt rounded-xl px-4 py-3 text-cream placeholder-foam/60 focus:outline-none focus:border-harp transition-colors text-sm"
                   />
                   {error && <p className="text-red-400 text-xs">{error}</p>}
                   <button
