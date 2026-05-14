@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Fraunces } from "next/font/google";
+import { Nunito, Fraunces } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${fraunces.variable} h-full antialiased`}>
+    <html lang="en" className={`${nunito.variable} ${fraunces.variable} h-full antialiased`}>
       <body className="min-h-full bg-stout text-cream flex flex-col">{children}</body>
     </html>
   );

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-nunito);
   --font-display: var(--font-fraunces);
 
   /* Guinness palette — warm light mode */
