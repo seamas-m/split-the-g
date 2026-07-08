@@ -7,83 +7,97 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+// Look up the top-20 postIds by nailed-vote count, then hydrate them.
+// Old behaviour fetched 500 posts + all their ratings and sorted in JS —
+// this scales linearly with data volume and would fall over quickly.
+async function topByNailed(sinceIso: string | null): Promise<
+  { postId: string; nailedCount: number }[]
+> {
+  const topPostIds = await prisma.rating.groupBy({
+    by: ["postId"],
+    where: {
+      score: 1,
+      ...(sinceIso ? { post: { createdAt: { gte: new Date(sinceIso) } } } : {}),
+    },
+    _count: { _all: true },
+    orderBy: { _count: { postId: "desc" } },
+    take: 20,
+  });
+
+  return topPostIds.map((t) => ({ postId: t.postId, nailedCount: t._count._all }));
+}
+
+async function hydrateLeaderboardEntries(
+  top: { postId: string; nailedCount: number }[],
+  currentUserId: string | null,
+) {
+  if (top.length === 0) return [];
+
+  const posts = await prisma.post.findMany({
+    where: { id: { in: top.map((t) => t.postId) } },
+    include: {
+      user: { select: { username: true } },
+      // Filtered _count returns only the notQuite (score=0) count for these
+      // 20 posts. No need to load individual rating rows.
+      _count: { select: { ratings: { where: { score: 0 } } } },
+    },
+  });
+
+  const postMap = new Map(posts.map((p) => [p.id, p]));
+
+  return top
+    .map((t) => {
+      const p = postMap.get(t.postId);
+      if (!p) return null;
+      return {
+        id: p.id,
+        imageUrl: p.imageUrl,
+        pubName: p.pubName,
+        city: p.city,
+        username: p.user.username,
+        nailedCount: t.nailedCount,
+        notQuiteCount: p._count.ratings,
+        isOwn: p.userId === currentUserId,
+      };
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null);
+}
+
 async function getWeeklyLeaderboard(currentUserId: string | null) {
   const since = new Date();
   since.setDate(since.getDate() - 7);
-
-  const posts = await prisma.post.findMany({
-    where: {
-      createdAt: { gte: since },
-      ratings: { some: { score: 1 } },
-    },
-    include: {
-      user: { select: { username: true } },
-      ratings: { select: { score: true, userId: true } },
-      _count: { select: { comments: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 200,
-  });
-
-  return posts
-    .map((p) => ({
-      id: p.id,
-      imageUrl: p.imageUrl,
-      pubName: p.pubName,
-      city: p.city,
-      username: p.user.username,
-      nailedCount: p.ratings.filter((r) => r.score === 1).length,
-      notQuiteCount: p.ratings.filter((r) => r.score === 0).length,
-      isOwn: p.userId === currentUserId,
-    }))
-    .sort((a, b) => b.nailedCount - a.nailedCount)
-    .slice(0, 20);
+  const top = await topByNailed(since.toISOString());
+  return hydrateLeaderboardEntries(top, currentUserId);
 }
 
 async function getAllTimeLeaderboard(currentUserId: string | null) {
-  const posts = await prisma.post.findMany({
-    where: { ratings: { some: { score: 1 } } },
-    include: {
-      user: { select: { username: true } },
-      ratings: { select: { score: true, userId: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 500,
-  });
-
-  return posts
-    .map((p) => ({
-      id: p.id,
-      imageUrl: p.imageUrl,
-      pubName: p.pubName,
-      city: p.city,
-      username: p.user.username,
-      nailedCount: p.ratings.filter((r) => r.score === 1).length,
-      notQuiteCount: p.ratings.filter((r) => r.score === 0).length,
-      isOwn: p.userId === currentUserId,
-    }))
-    .sort((a, b) => b.nailedCount - a.nailedCount)
-    .slice(0, 20);
+  const top = await topByNailed(null);
+  return hydrateLeaderboardEntries(top, currentUserId);
 }
 
+// One SQL query — GROUP BY + FILTER — replaces "fetch every post with a
+// city and aggregate in JS". Uses the new Post_city_idx.
 async function getCityLeaderboard() {
-  const posts = await prisma.post.findMany({
-    where: { city: { not: null } },
-    include: { ratings: { select: { score: true } } },
-  });
+  const rows = await prisma.$queryRaw<
+    { city: string; splits: bigint; nailed: bigint }[]
+  >`
+    SELECT
+      p."city" AS city,
+      COUNT(DISTINCT p.id) AS splits,
+      COUNT(r.id) FILTER (WHERE r.score = 1) AS nailed
+    FROM "Post" p
+    LEFT JOIN "Rating" r ON r."postId" = p.id
+    WHERE p."city" IS NOT NULL
+    GROUP BY p."city"
+    ORDER BY nailed DESC, splits DESC
+    LIMIT 20
+  `;
 
-  const cityMap: Record<string, { splits: number; nailed: number }> = {};
-  for (const p of posts) {
-    const city = p.city!;
-    if (!cityMap[city]) cityMap[city] = { splits: 0, nailed: 0 };
-    cityMap[city].splits++;
-    cityMap[city].nailed += p.ratings.filter((r) => r.score === 1).length;
-  }
-
-  return Object.entries(cityMap)
-    .map(([city, stats]) => ({ city, ...stats }))
-    .sort((a, b) => b.nailed - a.nailed)
-    .slice(0, 20);
+  return rows.map((r) => ({
+    city: r.city,
+    splits: Number(r.splits),
+    nailed: Number(r.nailed),
+  }));
 }
 
 export default async function LeaderboardPage() {
