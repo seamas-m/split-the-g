@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse, after } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { scoreSplit } from "@/lib/score-split";
-import { withAuth } from "@/lib/api-auth";
+import { withAuth, parseBody } from "@/lib/api-auth";
+
+const CreatePostBody = z.object({
+  imageUrl: z.string().url().max(2048),
+  pubName: z.string().trim().max(120).nullable().optional(),
+  city:    z.string().trim().max(120).nullable().optional(),
+});
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -64,12 +71,17 @@ export async function GET(req: NextRequest) {
 }
 
 export const POST = withAuth(async (req, { session }) => {
-  const { imageUrl, pubName, city } = await req.json();
-  if (!imageUrl) return NextResponse.json({ error: "imageUrl required" }, { status: 400 });
+  const { imageUrl, pubName, city } = await parseBody(req, CreatePostBody);
 
   // Create the post immediately with no score — user gets a fast response
   const post = await prisma.post.create({
-    data: { userId: session.user.id, imageUrl, pubName, city, aiScore: null },
+    data: {
+      userId: session.user.id,
+      imageUrl,
+      pubName: pubName || null,
+      city: city || null,
+      aiScore: null,
+    },
   });
 
   // Score the split after the response is sent. Vercel keeps the function

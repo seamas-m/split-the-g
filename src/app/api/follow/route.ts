@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { withAuth, HttpError } from "@/lib/api-auth";
+import { withAuth, HttpError, parseBody } from "@/lib/api-auth";
+
+const FollowBody = z.object({
+  followingId: z.string().min(1),
+});
 
 // POST { followingId } — toggle follow/unfollow, returns { following: bool }
 export const POST = withAuth(async (req, { session }) => {
-  const { followingId } = await req.json();
-  if (!followingId) return NextResponse.json({ error: "followingId required" }, { status: 400 });
+  const { followingId } = await parseBody(req, FollowBody);
+
   if (followingId === session.user.id) {
     throw new HttpError(403, "You can't follow yourself");
   }

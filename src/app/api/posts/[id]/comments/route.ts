@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { withAuth } from "@/lib/api-auth";
+import { withAuth, parseBody } from "@/lib/api-auth";
 
 type RouteCtx = { params: Promise<{ id: string }> };
+
+const CommentBody = z.object({
+  text: z.string().trim().min(1, "text can't be empty").max(500, "500 char limit"),
+});
 
 // GET is public — anyone can read comments on a post
 export async function GET(_req: NextRequest, { params }: RouteCtx) {
@@ -17,12 +22,11 @@ export async function GET(_req: NextRequest, { params }: RouteCtx) {
 
 export const POST = withAuth<RouteCtx>(async (req, { session, params }) => {
   const { id } = await params;
-  const { text } = await req.json();
-  if (!text?.trim()) return NextResponse.json({ error: "Text required" }, { status: 400 });
+  const { text } = await parseBody(req, CommentBody);
 
   const [comment, post] = await Promise.all([
     prisma.comment.create({
-      data: { postId: id, userId: session.user.id, text: text.trim() },
+      data: { postId: id, userId: session.user.id, text },
       include: { user: { select: { username: true, name: true } } },
     }),
     prisma.post.findUnique({ where: { id }, select: { userId: true } }),
@@ -36,7 +40,7 @@ export const POST = withAuth<RouteCtx>(async (req, { session, params }) => {
         actorId: session.user.id,
         postId: id,
         type: "comment",
-        body: text.trim().slice(0, 80),
+        body: text.slice(0, 80),
       },
     });
   }
