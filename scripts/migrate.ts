@@ -71,7 +71,14 @@ async function run() {
     `);
 
     try {
-      const statements = migrationSql
+      // Strip line comments before splitting on ; so a semicolon inside a
+      // comment doesn't break statement parsing.
+      const cleaned = migrationSql
+        .split("\n")
+        .map((line) => line.replace(/--.*$/, "").trimEnd())
+        .join("\n");
+
+      const statements = cleaned
         .split(";")
         .map((s) => s.trim())
         .filter(Boolean);
