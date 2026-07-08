@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { withAuth, HttpError } from "@/lib/api-auth";
+import { withAuth, HttpError, parseBody } from "@/lib/api-auth";
+
+const RatingBody = z.object({
+  postId: z.string().min(1),
+  vote: z.enum(["nailed", "notquite"]),
+});
 
 // score: 1 = "nailed it", 0 = "not quite"
 export const POST = withAuth(async (req, { session }) => {
-  const { postId, vote } = await req.json();
-  if (!postId || (vote !== "nailed" && vote !== "notquite")) {
-    return NextResponse.json({ error: "postId and vote (nailed|notquite) required" }, { status: 400 });
-  }
+  const { postId, vote } = await parseBody(req, RatingBody);
 
   // Block self-voting — the whole point is community validation
   const post = await prisma.post.findUnique({ where: { id: postId }, select: { userId: true } });
