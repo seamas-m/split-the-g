@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -69,11 +69,23 @@ export async function POST(req: NextRequest) {
   const { imageUrl, pubName, city } = await req.json();
   if (!imageUrl) return NextResponse.json({ error: "imageUrl required" }, { status: 400 });
 
-  // Score the split first, then create the post with the score included
-  const aiScore = await scoreSplit(imageUrl);
-
+  // Create the post immediately with no score — user gets a fast response
   const post = await prisma.post.create({
-    data: { userId: session.user.id, imageUrl, pubName, city, aiScore },
+    data: { userId: session.user.id, imageUrl, pubName, city, aiScore: null },
+  });
+
+  // Score the split after the response is sent. Vercel keeps the function
+  // alive for `after()` callbacks so this actually completes (unlike naked
+  // fire-and-forget promises which get killed with the function).
+  after(async () => {
+    try {
+      const aiScore = await scoreSplit(imageUrl);
+      if (aiScore !== null) {
+        await prisma.post.update({ where: { id: post.id }, data: { aiScore } });
+      }
+    } catch (err) {
+      console.error("[posts] deferred scoreSplit failed:", err);
+    }
   });
 
   return NextResponse.json(post, { status: 201 });
