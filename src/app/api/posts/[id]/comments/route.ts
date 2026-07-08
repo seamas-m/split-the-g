@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { withAuth } from "@/lib/api-auth";
 
-export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+type RouteCtx = { params: Promise<{ id: string }> };
+
+// GET is public — anyone can read comments on a post
+export async function GET(_req: NextRequest, { params }: RouteCtx) {
   const { id } = await params;
   const comments = await prisma.comment.findMany({
     where: { postId: id },
@@ -13,10 +15,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   return NextResponse.json(comments);
 }
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+export const POST = withAuth<RouteCtx>(async (req, { session, params }) => {
   const { id } = await params;
   const { text } = await req.json();
   if (!text?.trim()) return NextResponse.json({ error: "Text required" }, { status: 400 });
@@ -43,4 +42,4 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
 
   return NextResponse.json(comment, { status: 201 });
-}
+});

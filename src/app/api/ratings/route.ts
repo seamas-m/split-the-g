@@ -1,13 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { withAuth, HttpError } from "@/lib/api-auth";
 
 // score: 1 = "nailed it", 0 = "not quite"
-export async function POST(req: NextRequest) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+export const POST = withAuth(async (req, { session }) => {
   const { postId, vote } = await req.json();
   if (!postId || (vote !== "nailed" && vote !== "notquite")) {
     return NextResponse.json({ error: "postId and vote (nailed|notquite) required" }, { status: 400 });
@@ -15,9 +11,9 @@ export async function POST(req: NextRequest) {
 
   // Block self-voting — the whole point is community validation
   const post = await prisma.post.findUnique({ where: { id: postId }, select: { userId: true } });
-  if (!post) return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  if (!post) throw new HttpError(404, "Post not found");
   if (post.userId === session.user.id) {
-    return NextResponse.json({ error: "You can't vote on your own post" }, { status: 403 });
+    throw new HttpError(403, "You can't vote on your own post");
   }
 
   const score = vote === "nailed" ? 1 : 0;
@@ -61,4 +57,4 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ userVote: vote });
   }
-}
+});

@@ -1,17 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { withAuth, HttpError } from "@/lib/api-auth";
 
 // POST { followingId } — toggle follow/unfollow, returns { following: bool }
-export async function POST(req: NextRequest) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+export const POST = withAuth(async (req, { session }) => {
   const { followingId } = await req.json();
   if (!followingId) return NextResponse.json({ error: "followingId required" }, { status: 400 });
   if (followingId === session.user.id) {
-    return NextResponse.json({ error: "You can't follow yourself" }, { status: 403 });
+    throw new HttpError(403, "You can't follow yourself");
   }
 
   const existing = await prisma.follow.findUnique({
@@ -29,4 +25,4 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ following: true });
   }
-}
+});
