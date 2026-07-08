@@ -1,18 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { withAuth, requireCommentOwner } from "@/lib/api-auth";
 
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+type RouteCtx = { params: Promise<{ id: string }> };
 
+export const DELETE = withAuth<RouteCtx>(async (_req, { session, params }) => {
   const { id } = await params;
-  const comment = await prisma.comment.findUnique({ where: { id } });
-  if (!comment) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (comment.userId !== session.user.id)
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  await requireCommentOwner(id, session.user.id);
 
   await prisma.comment.delete({ where: { id } });
   return NextResponse.json({ success: true });
-}
+});

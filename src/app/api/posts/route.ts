@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { scoreSplit } from "@/lib/score-split";
+import { withAuth } from "@/lib/api-auth";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -62,10 +63,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ posts: mapped, nextCursor });
 }
 
-export async function POST(req: NextRequest) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+export const POST = withAuth(async (req, { session }) => {
   const { imageUrl, pubName, city } = await req.json();
   if (!imageUrl) return NextResponse.json({ error: "imageUrl required" }, { status: 400 });
 
@@ -89,4 +87,4 @@ export async function POST(req: NextRequest) {
   });
 
   return NextResponse.json(post, { status: 201 });
-}
+});

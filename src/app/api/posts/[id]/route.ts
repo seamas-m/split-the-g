@@ -1,16 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { withAuth, requirePostOwner } from "@/lib/api-auth";
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+type RouteCtx = { params: Promise<{ id: string }> };
 
+export const PATCH = withAuth<RouteCtx>(async (req, { session, params }) => {
   const { id } = await params;
-  const post = await prisma.post.findUnique({ where: { id } });
-  if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (post.userId !== session.user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  await requirePostOwner(id, session.user.id);
 
   const { pubName, city, imageUrl } = await req.json();
   const updated = await prisma.post.update({
@@ -23,19 +19,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   });
 
   return NextResponse.json(updated);
-}
+});
 
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+export const DELETE = withAuth<RouteCtx>(async (_req, { session, params }) => {
   const { id } = await params;
-  const post = await prisma.post.findUnique({ where: { id } });
-  if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (post.userId !== session.user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  await requirePostOwner(id, session.user.id);
 
   await prisma.rating.deleteMany({ where: { postId: id } });
   await prisma.post.delete({ where: { id } });
 
   return NextResponse.json({ success: true });
-}
+});
