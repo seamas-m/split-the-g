@@ -54,7 +54,7 @@ async function searchPubs(query: string, city: string): Promise<string[]> {
 
 export default function UploadPage() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, isPending: sessionPending } = useSession();
   const fileRef = useRef<HTMLInputElement>(null);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -74,11 +74,19 @@ export default function UploadPage() {
   const [pubSuggestions, setPubSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Auto-open camera on mount
+  // Redirect to login if unauthenticated — prevents wasted Cloudinary uploads
   useEffect(() => {
+    if (!sessionPending && !session) {
+      router.replace("/auth/login?redirect=/upload");
+    }
+  }, [sessionPending, session, router]);
+
+  // Auto-open camera on mount — only once session is confirmed
+  useEffect(() => {
+    if (sessionPending || !session) return;
     const t = setTimeout(() => fileRef.current?.click(), 100);
     return () => clearTimeout(t);
-  }, []);
+  }, [sessionPending, session]);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -167,6 +175,15 @@ export default function UploadPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  // Show a loading state while session is pending or during redirect
+  if (sessionPending || !session) {
+    return (
+      <main className="flex-1 flex items-center justify-center p-6">
+        <Loader2 className="animate-spin text-foam" size={24} />
+      </main>
+    );
   }
 
   return (
