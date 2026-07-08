@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Bell, X } from "lucide-react";
 import { timeAgo } from "@/lib/time";
 import { cn } from "@/lib/utils";
+import { useSession } from "@/lib/auth-client";
 
 interface Notification {
   id: string;
@@ -18,6 +19,7 @@ interface Notification {
 }
 
 export default function NotificationsSheet() {
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -40,11 +42,17 @@ export default function NotificationsSheet() {
     }
   }, []);
 
+  // Only fetch and poll when authenticated — avoids a 401 every 30s for logged-out users
   useEffect(() => {
+    if (!session) {
+      setNotifications([]);
+      setUnreadCount(0);
+      return;
+    }
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 30_000);
     return () => clearInterval(interval);
-  }, [fetchNotifications]);
+  }, [session, fetchNotifications]);
 
   // Close on outside click
   useEffect(() => {
