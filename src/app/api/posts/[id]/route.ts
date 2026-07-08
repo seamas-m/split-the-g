@@ -32,8 +32,19 @@ export const DELETE = withAuth<RouteCtx>(async (_req, { session, params }) => {
   const { id } = await params;
   await requirePostOwner(id, session.user.id);
 
-  await prisma.rating.deleteMany({ where: { postId: id } });
-  await prisma.post.delete({ where: { id } });
+  // Wrap in a transaction so pinnedPostId cleanup + post deletion are atomic.
+  // - user.updateMany clears pinnedPostId if the deleted post was pinned
+  //   (no FK cascade because pinnedPostId isn't declared as a relation).
+  // - post.delete cascades through Rating, Comment, and Notification via
+  //   their onDelete: Cascade — so the previous manual rating.deleteMany
+  //   was redundant.
+  await prisma.$transaction([
+    prisma.user.updateMany({
+      where: { id: session.user.id, pinnedPostId: id },
+      data: { pinnedPostId: null },
+    }),
+    prisma.post.delete({ where: { id } }),
+  ]);
 
   return NextResponse.json({ success: true });
 });
