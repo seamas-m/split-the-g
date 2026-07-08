@@ -85,7 +85,7 @@ export default function FeedTabs({
         !isLoggedIn ? (
           <div className="flex flex-col items-center justify-center h-64 text-foam gap-3">
             <p className="text-cream font-semibold">Sign in to see your feed</p>
-            <Link href="/sign-in" className="bg-harp text-stout font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
+            <Link href="/auth/login" className="bg-harp text-stout font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
               Sign in
             </Link>
           </div>
