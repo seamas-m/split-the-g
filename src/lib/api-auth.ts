@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
+import type { ZodType } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -57,6 +58,38 @@ export function withAuth<Ctx extends BaseCtx = BaseCtx>(
       throw err;
     }
   };
+}
+
+/**
+ * Parses the request body against a Zod schema, throwing HttpError(400)
+ * on either a JSON parse failure or a validation failure. withAuth
+ * catches these and returns a proper 400 JSON response, so route
+ * handlers stay linear.
+ *
+ * Usage:
+ *   const RatingBody = z.object({
+ *     postId: z.string().uuid(),
+ *     vote: z.enum(["nailed", "notquite"]),
+ *   });
+ *   export const POST = withAuth(async (req, { session }) => {
+ *     const { postId, vote } = await parseBody(req, RatingBody);
+ *     // ...
+ *   });
+ */
+export async function parseBody<T>(req: NextRequest, schema: ZodType<T>): Promise<T> {
+  let raw: unknown;
+  try {
+    raw = await req.json();
+  } catch {
+    throw new HttpError(400, "Invalid JSON body");
+  }
+  const parsed = schema.safeParse(raw);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    const field = first.path.length > 0 ? `${first.path.join(".")}: ` : "";
+    throw new HttpError(400, `${field}${first.message}`);
+  }
+  return parsed.data;
 }
 
 /**
