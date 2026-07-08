@@ -24,26 +24,29 @@ export const POST = withAuth<RouteCtx>(async (req, { session, params }) => {
   const { id } = await params;
   const { text } = await parseBody(req, CommentBody);
 
-  const [comment, post] = await Promise.all([
+  // Read who owns the post so we know whether to send a notification.
+  const post = await prisma.post.findUnique({ where: { id }, select: { userId: true } });
+  const shouldNotify = post && post.userId !== session.user.id;
+
+  // Atomic: create the comment + (optionally) the notification for the post
+  // owner. If either write fails, neither happens — no orphaned notification.
+  const [comment] = await prisma.$transaction([
     prisma.comment.create({
       data: { postId: id, userId: session.user.id, text },
       include: { user: { select: { username: true, name: true } } },
     }),
-    prisma.post.findUnique({ where: { id }, select: { userId: true } }),
+    ...(shouldNotify
+      ? [prisma.notification.create({
+          data: {
+            userId: post!.userId,
+            actorId: session.user.id,
+            postId: id,
+            type: "comment",
+            body: text.slice(0, 80),
+          },
+        })]
+      : []),
   ]);
-
-  // Notify post owner (skip if commenting on own post)
-  if (post && post.userId !== session.user.id) {
-    await prisma.notification.create({
-      data: {
-        userId: post.userId,
-        actorId: session.user.id,
-        postId: id,
-        type: "comment",
-        body: text.slice(0, 80),
-      },
-    });
-  }
 
   return NextResponse.json(comment, { status: 201 });
 });
