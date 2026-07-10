@@ -61,7 +61,7 @@ async function searchPosts(q: string, city: string, currentUserId: string | null
     take: 50,
     include: {
       user: { select: { username: true, image: true } },
-      ratings: { select: { score: true, userId: true } },
+      ratings: { select: { nailed: true, userId: true } },
       comments: { select: { id: true } },
     },
   });

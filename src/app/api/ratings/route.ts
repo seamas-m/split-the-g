@@ -8,10 +8,10 @@ const RatingBody = z.object({
   vote: z.enum(["nailed", "notquite"]),
 });
 
-// score: 1 = "nailed it", 0 = "not quite"
 export const POST = withAuth(async (req, { session }) => {
   const { postId, vote } = await parseBody(req, RatingBody);
   const userId = session.user.id;
+  const nailed = vote === "nailed";
 
   // Block self-voting — the whole point is community validation
   const post = await prisma.post.findUnique({ where: { id: postId }, select: { userId: true } });
@@ -20,12 +20,11 @@ export const POST = withAuth(async (req, { session }) => {
     throw new HttpError(403, "You can't vote on your own post");
   }
 
-  const score = vote === "nailed" ? 1 : 0;
   const existing = await prisma.rating.findUnique({
     where: { postId_userId: { postId, userId } },
   });
 
-  if (existing && existing.score === score) {
+  if (existing && existing.nailed === nailed) {
     // Same vote — toggle off. Atomic: delete rating + clean up its notification.
     await prisma.$transaction([
       prisma.rating.delete({ where: { postId_userId: { postId, userId } } }),
@@ -43,14 +42,14 @@ export const POST = withAuth(async (req, { session }) => {
     await prisma.$transaction([
       prisma.rating.update({
         where: { postId_userId: { postId, userId } },
-        data: { score },
+        data: { nailed },
       }),
-      ...(existing.score === 1
+      ...(existing.nailed
         ? [prisma.notification.deleteMany({
             where: { actorId: userId, postId, type: "nailed" },
           })]
         : []),
-      ...(score === 1
+      ...(nailed
         ? [prisma.notification.create({
             data: { userId: post.userId, actorId: userId, postId, type: "nailed" },
           })]
@@ -61,8 +60,8 @@ export const POST = withAuth(async (req, { session }) => {
 
   // New vote — atomic: create rating + optional notification in one txn.
   await prisma.$transaction([
-    prisma.rating.create({ data: { postId, userId, score } }),
-    ...(score === 1
+    prisma.rating.create({ data: { postId, userId, nailed } }),
+    ...(nailed
       ? [prisma.notification.create({
           data: { userId: post.userId, actorId: userId, postId, type: "nailed" },
         })]

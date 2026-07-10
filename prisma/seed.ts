@@ -94,7 +94,7 @@ async function main() {
           create: {
             postId: post.id,
             userId: rater.id,
-            score: Math.floor(Math.random() * 3) + 3, // scores 3-5, it's good Guinness
+            nailed: Math.random() > 0.3, // 70% chance of nailed — it's good Guinness
           },
         });
         ratingCount++;
