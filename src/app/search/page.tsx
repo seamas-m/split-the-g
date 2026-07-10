@@ -110,7 +110,7 @@ export default async function SearchPage({
                     <Link
                       key={pub}
                       href={`/pub/${encodeURIComponent(pub)}`}
-                      className="px-4 py-2 rounded-full bg-malt text-cream text-sm hover:bg-harp hover:text-stout transition-colors font-medium"
+                      className="px-4 py-2 rounded-full bg-malt text-cream text-sm hover:bg-harp hover:text-cream transition-colors font-medium"
                     >
                       {pub}
                     </Link>

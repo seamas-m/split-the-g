@@ -104,7 +104,7 @@ export default function ProfilePage() {
           <button
             type="submit"
             disabled={usernameLoading}
-            className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-40 transition-opacity text-sm tracking-wide"
+            className="bg-harp text-cream font-bold py-3 rounded-xl disabled:opacity-40 transition-opacity text-sm tracking-wide"
           >
             {usernameLoading ? "Saving…" : "Update username"}
           </button>
@@ -137,7 +137,7 @@ export default function ProfilePage() {
           <button
             type="submit"
             disabled={passwordLoading}
-            className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-40 transition-opacity text-sm tracking-wide"
+            className="bg-harp text-cream font-bold py-3 rounded-xl disabled:opacity-40 transition-opacity text-sm tracking-wide"
           >
             {passwordLoading ? "Saving…" : "Change password"}
           </button>

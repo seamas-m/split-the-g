@@ -6,7 +6,7 @@ import NotificationsSheet from "./notifications-sheet";
 
 function SplitGMark({ size = 28 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="text-harp">
       <path
         d="M 38,20.5833 L 47.5,20.5833
            C 49.0833,23.75 49.0833,28.5 49.0833,30.0833
@@ -19,13 +19,13 @@ function SplitGMark({ size = 28 }: { size?: number }) {
            C 30.0833,42.75 26.9167,42.75 26.9167,30.0833
            C 26.9167,28.5 26.9167,23.75 28.5,20.5833
            L 38,20.5833 Z"
-        stroke="#c9a454" strokeWidth="2" strokeLinejoin="round"
+        stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round"
       />
       <path
         d="M 43.5416,56.2083 L 44.3333,55.4167 L 31.6667,55.4167 L 32.4583,56.2083 L 43.5416,56.2083 Z"
-        stroke="#c9a454" strokeWidth="1.5" strokeLinejoin="round"
+        stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"
       />
-      <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="#c9a454" strokeWidth="3" strokeLinecap="round" />
+      <line x1="26" y1="30.5" x2="50" y2="30.5" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -34,7 +34,7 @@ export default function AppHeader() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 bg-stout/95 backdrop-blur border-b border-malt px-5 py-3 z-[70] flex items-center justify-between">
+    <header className="sticky top-0 bg-stout/95 backdrop-blur-md border-b border-malt/60 px-5 py-3 z-[70] flex items-center justify-between shadow-warm-sm">
       <Link href="/feed" className="flex items-center gap-2.5 group">
         <SplitGMark size={36} />
         <span className="font-display text-xl font-bold text-cream tracking-tight group-hover:text-harp transition-colors leading-none">

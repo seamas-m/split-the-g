@@ -183,7 +183,7 @@ export default function PostActions({ postId, imageUrl, pubName, city, isPinned 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-50 text-sm tracking-wide"
+                    className="w-full bg-harp text-cream font-bold py-3 rounded-xl disabled:opacity-50 text-sm tracking-wide"
                   >
                     {loading ? "Saving…" : "Save changes"}
                   </button>

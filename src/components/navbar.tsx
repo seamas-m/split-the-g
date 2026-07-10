@@ -16,7 +16,10 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-porter/95 backdrop-blur border-t border-malt flex justify-around items-center h-16 z-50">
+    <nav
+      className="fixed bottom-0 left-0 right-0 bg-porter/95 backdrop-blur-md border-t border-malt/50 flex justify-around items-center h-16 z-50"
+      style={{ boxShadow: "0 -4px 12px -2px rgba(74, 40, 12, 0.10)" }}
+    >
       {links.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}

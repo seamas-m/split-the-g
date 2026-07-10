@@ -4,19 +4,35 @@
   --font-sans: var(--font-nunito);
   --font-display: var(--font-fraunces);
 
-  /* Guinness palette — warm light mode */
-  --color-stout:  #F5EDD8;   /* warm linen background */
-  --color-porter: #FFFDF7;   /* warm white card surface */
-  --color-malt:   #E0CDB0;   /* warm tan borders */
-  --color-cream:  #2C1A0E;   /* dark espresso primary text */
-  --color-foam:   #7A5C3F;   /* warm brown secondary text */
-  --color-harp:   #B8860B;   /* richer gold accent */
+  /*
+   * Warm cream palette — inspired by a well-lit pub interior.
+   *
+   * Design principle: cards float on a warm honey/parchment background.
+   * Background is intentionally saturated so white cards read as elevated.
+   * Gold is bold enough to earn "accent" status against the cream.
+   */
+  --color-stout:  #E8D4A2;   /* saturated honey/parchment background */
+  --color-porter: #FFFCF3;   /* warm white card surface — clearly floats above bg */
+  --color-malt:   #C9AB78;   /* visible border, warm tan */
+  --color-cream:  #2A1808;   /* dark espresso primary text */
+  --color-foam:   #6B4A22;   /* richer warm brown — legible secondary */
+  --color-harp:   #C99A2E;   /* saturated warm gold — actually pops against cream */
   --color-ink:    #0e0c0b;   /* permanent dark — overlays, image badges */
+
+  /* Warm shadows — subtle brown tint reads more natural on cream than pure black */
+  --shadow-warm-sm: 0 1px 2px 0 rgba(74, 40, 12, 0.08);
+  --shadow-warm-md: 0 4px 6px -1px rgba(74, 40, 12, 0.10), 0 2px 4px -2px rgba(74, 40, 12, 0.06);
+  --shadow-warm-lg: 0 10px 15px -3px rgba(74, 40, 12, 0.12), 0 4px 6px -4px rgba(74, 40, 12, 0.08);
 }
 
 * {
   -webkit-font-smoothing: antialiased;
 }
+
+/* Utility classes that consume the warm shadow tokens */
+.shadow-warm-sm { box-shadow: var(--shadow-warm-sm); }
+.shadow-warm-md { box-shadow: var(--shadow-warm-md); }
+.shadow-warm-lg { box-shadow: var(--shadow-warm-lg); }
 
 @keyframes cheers {
   0%   { transform: scale(1) rotate(0deg); }
