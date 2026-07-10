@@ -21,7 +21,7 @@ async function getUserProfile(username: string, currentUserId: string | null) {
       orderBy: { createdAt: "desc" },
       include: {
         user: { select: { username: true, image: true } },
-        ratings: { select: { score: true, userId: true } },
+        ratings: { select: { nailed: true, userId: true } },
         comments: { select: { id: true } },
       },
     }),
@@ -34,7 +34,7 @@ async function getUserProfile(username: string, currentUserId: string | null) {
   ]);
 
   const mappedPosts = posts.map((p) => mapPost(p, currentUserId));
-  const totalNailed = posts.reduce((s, p) => s + p.ratings.filter((r) => r.score === 1).length, 0);
+  const totalNailed = posts.reduce((s, p) => s + p.ratings.filter((r) => r.nailed).length, 0);
 
   const cityCounts: Record<string, number> = {};
   for (const p of posts) {

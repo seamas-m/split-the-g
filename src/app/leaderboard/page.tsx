@@ -16,7 +16,7 @@ async function topByNailed(sinceIso: string | null): Promise<
   const topPostIds = await prisma.rating.groupBy({
     by: ["postId"],
     where: {
-      score: 1,
+      nailed: true,
       ...(sinceIso ? { post: { createdAt: { gte: new Date(sinceIso) } } } : {}),
     },
     _count: { _all: true },
@@ -37,9 +37,9 @@ async function hydrateLeaderboardEntries(
     where: { id: { in: top.map((t) => t.postId) } },
     include: {
       user: { select: { username: true } },
-      // Filtered _count returns only the notQuite (score=0) count for these
-      // 20 posts. No need to load individual rating rows.
-      _count: { select: { ratings: { where: { score: 0 } } } },
+      // Filtered _count returns only the notQuite (nailed=false) count for
+      // these 20 posts. No need to load individual rating rows.
+      _count: { select: { ratings: { where: { nailed: false } } } },
     },
   });
 
@@ -84,7 +84,7 @@ async function getCityLeaderboard() {
     SELECT
       p."city" AS city,
       COUNT(DISTINCT p.id) AS splits,
-      COUNT(r.id) FILTER (WHERE r.score = 1) AS nailed
+      COUNT(r.id) FILTER (WHERE r.nailed = TRUE) AS nailed
     FROM "Post" p
     LEFT JOIN "Rating" r ON r."postId" = p.id
     WHERE p."city" IS NOT NULL

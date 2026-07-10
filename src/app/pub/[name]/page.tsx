@@ -21,7 +21,7 @@ async function getPubData(pubName: string, currentUserId: string | null) {
     orderBy: { createdAt: "desc" },
     include: {
       user: { select: { username: true, image: true } },
-      ratings: { select: { score: true, userId: true } },
+      ratings: { select: { nailed: true, userId: true } },
       comments: { select: { id: true } },
     },
   });

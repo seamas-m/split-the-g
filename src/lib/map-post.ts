@@ -1,4 +1,4 @@
-type RawRating = { score: number; userId: string };
+type RawRating = { nailed: boolean; userId: string };
 
 type RawPost = {
   id: string;
@@ -24,9 +24,9 @@ export function mapPost(p: RawPost, currentUserId: string | null) {
     userId: p.userId,
     user: p.user,
     aiScore: p.aiScore,
-    nailedCount: p.ratings.filter((r) => r.score === 1).length,
-    notQuiteCount: p.ratings.filter((r) => r.score === 0).length,
-    userVote: myRating == null ? null : myRating.score === 1 ? ("nailed" as const) : ("notquite" as const),
+    nailedCount: p.ratings.filter((r) => r.nailed).length,
+    notQuiteCount: p.ratings.filter((r) => !r.nailed).length,
+    userVote: myRating == null ? null : myRating.nailed ? ("nailed" as const) : ("notquite" as const),
     totalComments: p.comments.length,
     isOwner: currentUserId === p.userId,
   };

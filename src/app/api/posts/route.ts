@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
     ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     include: {
       user: { select: { username: true, image: true } },
-      ratings: { select: { score: true, userId: true } },
+      ratings: { select: { nailed: true, userId: true } },
       comments: { select: { id: true } },
     },
   });
@@ -59,9 +59,9 @@ export async function GET(req: NextRequest) {
       createdAt: p.createdAt.toISOString(),
       userId: p.userId,
       user: p.user,
-      nailedCount: p.ratings.filter((r) => r.score === 1).length,
-      notQuiteCount: p.ratings.filter((r) => r.score === 0).length,
-      userVote: myRating == null ? null : myRating.score === 1 ? "nailed" : "notquite",
+      nailedCount: p.ratings.filter((r) => r.nailed).length,
+      notQuiteCount: p.ratings.filter((r) => !r.nailed).length,
+      userVote: myRating == null ? null : myRating.nailed ? "nailed" : "notquite",
       totalComments: p.comments.length,
       isOwner: currentUserId === p.userId,
     };

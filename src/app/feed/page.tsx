@@ -17,7 +17,7 @@ async function getForYouPosts(currentUserId: string | null) {
     take: LIMIT + 1,
     include: {
       user: { select: { username: true, image: true } },
-      ratings: { select: { score: true, userId: true } },
+      ratings: { select: { nailed: true, userId: true } },
       comments: { select: { id: true } },
     },
   });
@@ -41,7 +41,7 @@ async function getFollowingPosts(currentUserId: string) {
     take: LIMIT + 1,
     include: {
       user: { select: { username: true, image: true } },
-      ratings: { select: { score: true, userId: true } },
+      ratings: { select: { nailed: true, userId: true } },
       comments: { select: { id: true } },
     },
   });
