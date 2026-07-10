@@ -35,7 +35,7 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
 
   return (
     <>
-      <article className="relative bg-porter rounded-2xl overflow-hidden border border-malt">
+      <article className="relative bg-porter rounded-2xl overflow-hidden border border-malt/40 shadow-warm-sm hover:shadow-warm-md transition-shadow duration-200">
         <div
           className="relative aspect-[3/4] w-full cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
@@ -55,8 +55,10 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
             </div>
           )}
           {post.aiScore !== null && post.aiScore !== undefined && (
-            <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1 bg-ink/75 backdrop-blur-sm rounded-full px-2.5 py-1 pointer-events-none">
-              <span className="text-harp text-xs font-bold drop-shadow">{scoreLabel(post.aiScore)}</span>
+            <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-ink/85 backdrop-blur-md rounded-full px-3.5 py-1.5 pointer-events-none shadow-warm-md">
+              <span className="text-harp font-display text-sm font-bold tracking-wide leading-none">
+                {scoreLabel(post.aiScore)}
+              </span>
             </div>
           )}
         </div>
@@ -67,7 +69,7 @@ export default function PostCard({ post, isOwner, isPinned }: PostCardProps) {
             {post.pubName ? (
               <Link
                 href={`/pub/${encodeURIComponent(post.pubName)}`}
-                className="font-bold text-base text-cream leading-tight hover:text-harp transition-colors"
+                className="font-display font-bold text-lg text-cream leading-tight hover:text-harp transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
                 {post.pubName}

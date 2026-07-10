@@ -123,7 +123,7 @@ export default async function UserProfilePage({
           <div className="flex flex-col items-center justify-center h-48 text-foam gap-4">
             <p className="italic">No pints posted yet.</p>
             {isOwnProfile && (
-              <Link href="/upload" className="bg-harp text-stout font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
+              <Link href="/upload" className="bg-harp text-cream font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
                 Post your first pint
               </Link>
             )}

@@ -47,7 +47,7 @@ export default function FeedTabs({
           className={cn(
             "px-4 py-1.5 rounded-lg text-sm font-medium transition-all",
             tab === "forYou"
-              ? "bg-harp text-stout"
+              ? "bg-harp text-cream"
               : "text-foam hover:text-cream"
           )}
         >
@@ -58,7 +58,7 @@ export default function FeedTabs({
           className={cn(
             "px-4 py-1.5 rounded-lg text-sm font-medium transition-all",
             tab === "following"
-              ? "bg-harp text-stout"
+              ? "bg-harp text-cream"
               : "text-foam hover:text-cream"
           )}
         >
@@ -71,7 +71,7 @@ export default function FeedTabs({
         forYouPosts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-foam gap-4">
             <p className="italic text-lg">No pints yet.</p>
-            <Link href="/upload" className="bg-harp text-stout font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
+            <Link href="/upload" className="bg-harp text-cream font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
               Post the first pint
             </Link>
           </div>
@@ -85,7 +85,7 @@ export default function FeedTabs({
         !isLoggedIn ? (
           <div className="flex flex-col items-center justify-center h-64 text-foam gap-3">
             <p className="text-cream font-semibold">Sign in to see your feed</p>
-            <Link href="/auth/login" className="bg-harp text-stout font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
+            <Link href="/auth/login" className="bg-harp text-cream font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
               Sign in
             </Link>
           </div>
@@ -93,7 +93,7 @@ export default function FeedTabs({
           <div className="flex flex-col items-center justify-center h-64 text-foam gap-3 text-center px-6">
             <p className="text-cream font-semibold">No pints from people you follow yet</p>
             <p className="text-sm text-foam/70">Find someone to follow by searching for a pub or username</p>
-            <Link href="/search" className="bg-harp text-stout font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
+            <Link href="/search" className="bg-harp text-cream font-bold px-6 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity">
               Find people
             </Link>
           </div>

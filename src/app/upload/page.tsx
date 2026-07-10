@@ -308,7 +308,7 @@ export default function UploadPage() {
         <button
           type="submit"
           disabled={loading || !file}
-          className="bg-harp text-stout font-bold py-3 rounded-xl disabled:opacity-40 mt-2 tracking-wide transition-opacity"
+          className="bg-harp text-cream font-bold py-3 rounded-xl disabled:opacity-40 mt-2 tracking-wide transition-opacity"
         >
           {loading ? "Posting…" : "Post pint"}
         </button>

@@ -170,7 +170,7 @@ export default function LeaderboardTabs({ weekly, allTime, cities }: Leaderboard
             onClick={() => setTab(t.id)}
             className={cn(
               "px-4 py-1.5 rounded-lg text-sm font-medium transition-all",
-              tab === t.id ? "bg-harp text-stout" : "text-foam hover:text-cream"
+              tab === t.id ? "bg-harp text-cream" : "text-foam hover:text-cream"
             )}
           >
             {t.label}

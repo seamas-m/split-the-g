@@ -107,7 +107,7 @@ export default function OnboardingModal() {
         <div className="flex flex-col gap-2 px-6 pb-8 pt-2">
           <button
             onClick={dismiss}
-            className="w-full bg-harp text-stout font-bold py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity"
+            className="w-full bg-harp text-cream font-bold py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity"
           >
             Got it, let&apos;s go
           </button>

@@ -116,7 +116,7 @@ export default function AboutPage() {
           <p className="text-foam text-sm">Nailed a split? We need proof.</p>
           <Link
             href="/upload"
-            className="bg-harp text-stout font-bold px-8 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity"
+            className="bg-harp text-cream font-bold px-8 py-3 rounded-xl text-sm tracking-wide hover:opacity-90 transition-opacity"
           >
             Post your split
           </Link>

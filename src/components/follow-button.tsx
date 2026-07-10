@@ -50,7 +50,7 @@ export default function FollowButton({ followingId, initialFollowing, followerCo
           "px-5 py-1.5 rounded-xl text-sm font-semibold border transition-all",
           following
             ? "border-malt text-foam hover:border-foam hover:text-cream"
-            : "bg-harp text-stout border-harp hover:opacity-90"
+            : "bg-harp text-cream border-harp hover:opacity-90"
         )}
       >
         {following ? "Following" : "Follow"}

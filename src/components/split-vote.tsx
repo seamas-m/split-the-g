@@ -61,25 +61,25 @@ export default function SplitVote({ postId, nailedCount, notQuiteCount, userVote
       <button
         onClick={() => handleVote("nailed")}
         className={cn(
-          "flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-all",
+          "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border-2 transition-all",
           vote === "nailed"
-            ? "bg-harp/20 border-harp text-harp font-semibold"
-            : "border-malt text-foam hover:border-foam hover:text-cream"
+            ? "bg-harp border-harp text-porter shadow-warm-sm"
+            : "border-malt/70 text-foam hover:border-harp/60 hover:text-cream"
         )}
       >
-        Nailed it {nailed > 0 && <span className="opacity-70">{nailed}</span>}
+        Nailed it {nailed > 0 && <span className={vote === "nailed" ? "opacity-90" : "opacity-70"}>{nailed}</span>}
       </button>
 
       <button
         onClick={() => handleVote("notquite")}
         className={cn(
-          "flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border transition-all",
+          "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border-2 transition-all",
           vote === "notquite"
-            ? "bg-foam/10 border-foam text-cream font-semibold"
-            : "border-malt text-foam hover:border-foam hover:text-cream"
+            ? "bg-cream border-cream text-porter shadow-warm-sm"
+            : "border-malt/70 text-foam hover:border-cream/50 hover:text-cream"
         )}
       >
-        Not quite {notQuite > 0 && <span className="opacity-70">{notQuite}</span>}
+        Not quite {notQuite > 0 && <span className={vote === "notquite" ? "opacity-90" : "opacity-70"}>{notQuite}</span>}
       </button>
     </div>
   );
